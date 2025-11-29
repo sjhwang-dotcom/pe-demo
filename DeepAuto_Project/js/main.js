@@ -58,7 +58,13 @@ function refreshCharts() {
     if (scatterChart) scatterChart.destroy();
 
     if (currentTab === 'sourcing') initSourcingCharts();
-    if (currentTab === 'evaluation') initEvalCharts();
+    if (currentTab === 'evaluation') {
+        // Get the current company for Evaluation tab
+        const company = window.evalData?.find(c => c.id === currentEvalId);
+        if (company) {
+            initEvalCharts(company);
+        }
+    }
     if (currentTab === 'portfolio') initPortfolioCharts();
 }
 
@@ -392,8 +398,26 @@ function renderConviction(conviction) {
 }
 
 function initEvalCharts(company) {
-    if (evalChart) evalChart.destroy();
-    if (evalScatterChart) evalScatterChart.destroy();
+    // Properly destroy existing charts
+    if (evalChart) {
+        evalChart.destroy();
+        evalChart = null;
+    }
+    if (evalScatterChart) {
+        evalScatterChart.destroy();
+        evalScatterChart = null;
+    }
+
+    // Reset canvas elements to ensure clean reinit
+    const resetCanvas = (id) => {
+        const oldCanvas = document.getElementById(id);
+        if (oldCanvas) {
+            const newCanvas = oldCanvas.cloneNode(true);
+            oldCanvas.parentNode.replaceChild(newCanvas, oldCanvas);
+            return newCanvas;
+        }
+        return null;
+    };
 
     const { textColor, gridColor } = getChartColors();
 
@@ -430,7 +454,7 @@ function initEvalCharts(company) {
         };
     });
 
-    const ctxWaterfall = document.getElementById('evalWaterfallChart');
+    const ctxWaterfall = resetCanvas('evalWaterfallChart');
     if (ctxWaterfall) {
         evalChart = new Chart(ctxWaterfall.getContext('2d'), {
             type: 'bar',
@@ -467,7 +491,7 @@ function initEvalCharts(company) {
     }
 
     // 2. Peer Benchmarking Scatter (Growth vs Multiple)
-    const ctxScatter = document.getElementById('evalScatterChart');
+    const ctxScatter = resetCanvas('evalScatterChart');
     if (ctxScatter) {
         // Parse metrics for dynamic plotting
         const growth = parseFloat(company.metrics.revenueGrowth);
