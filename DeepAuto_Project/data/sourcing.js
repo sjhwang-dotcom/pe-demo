@@ -7,7 +7,8 @@ window.sourcingData = [
         "e": "$6.5M",
         "m": "15.5%",
         "score": 96,
-        "action": "Sign NDA"
+        "action": "Sign NDA",
+        "lead": "David Kim"
     },
     {
         "name": "FlowTech Plumbing",
@@ -17,7 +18,8 @@ window.sourcingData = [
         "e": "$4.8M",
         "m": "17.1%",
         "score": 92,
-        "action": "Review CIP"
+        "action": "Review CIP",
+        "lead": "Sarah Chen"
     },
     {
         "name": "SunState HVAC",
@@ -27,7 +29,8 @@ window.sourcingData = [
         "e": "$8.2M",
         "m": "14.9%",
         "score": 89,
-        "action": "Contact"
+        "action": "Contact",
+        "lead": null
     },
     {
         "name": "CoolBreeze Inc",
@@ -37,7 +40,8 @@ window.sourcingData = [
         "e": "$3.1M",
         "m": "17.2%",
         "score": 85,
-        "action": "Pass"
+        "action": "Pass",
+        "lead": "Mike Ross"
     },
     {
         "name": "Midwest Mechanical",
@@ -47,7 +51,8 @@ window.sourcingData = [
         "e": "$15.0M",
         "m": "12.5%",
         "score": 82,
-        "action": "Monitor"
+        "action": "Monitor",
+        "lead": null
     },
     {
         "name": "Reliable Air",
@@ -57,7 +62,8 @@ window.sourcingData = [
         "e": "$2.5M",
         "m": "20.8%",
         "score": 78,
-        "action": "Review"
+        "action": "Review",
+        "lead": "David Kim"
     },
     {
         "name": "Texas Thermal",
@@ -67,6 +73,7 @@ window.sourcingData = [
         "e": "$5.5M",
         "m": "15.7%",
         "score": 75,
-        "action": "Contact"
+        "action": "Contact",
+        "lead": "Sarah Chen"
     }
 ]

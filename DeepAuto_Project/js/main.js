@@ -188,6 +188,20 @@ function renderSourcingTable() {
             if (c.action.includes('NDA')) actionClass = "bg-emerald-600 border-transparent text-white hover:bg-emerald-700 shadow-sm";
             else if (c.action.includes('Review')) actionClass = "bg-blue-600 border-transparent text-white hover:bg-blue-700 shadow-sm";
 
+            // Lead Logic
+            let leadHtml = `<span class="text-[10px] text-textMuted italic">Unassigned</span>`;
+            if (c.lead) {
+                const initials = c.lead.split(' ').map(n => n[0]).join('');
+                leadHtml = `
+                    <div class="flex items-center justify-center gap-1.5">
+                        <div class="w-5 h-5 rounded-full bg-bgPanel border border-borderSubtle flex items-center justify-center text-[9px] font-bold text-textMain">
+                            ${initials}
+                        </div>
+                        <span class="text-[11px] font-medium text-textMain">${c.lead}</span>
+                    </div>
+                `;
+            }
+
             return `
             <tr class="hover:bg-bgSoft transition-colors group border-b border-borderSubtle last:border-0">
                 <td class="px-5 py-4 font-bold text-sm text-textMain group-hover:text-accentBlue transition-colors">${c.name}</td>
@@ -199,6 +213,9 @@ function renderSourcingTable() {
                 <td class="px-5 py-4 text-right font-mono font-medium text-textMain">${c.r}</td>
                 <td class="px-5 py-4 text-right font-mono font-medium text-textMain">${c.e}</td>
                 <td class="px-5 py-4 text-right font-mono font-bold text-accentTeal">${c.m}</td>
+                <td class="px-5 py-4 text-center">
+                    ${leadHtml}
+                </td>
                 <td class="px-5 py-4 text-center">
                     <span class="font-bold text-accentBlue bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded text-xs border border-blue-100 dark:border-blue-800">${c.score}</span>
                 </td>
@@ -1310,7 +1327,7 @@ window.setRiskTab = function (tabId) {
         el.classList.add('text-textMuted', 'border-transparent');
     });
 
-    const activeTab = document.getElementById(`tab - risk - ${tabId}`);
+    const activeTab = document.getElementById(`tab-risk-${tabId}`);
     if (activeTab) {
         activeTab.classList.remove('text-textMuted', 'border-transparent');
         activeTab.classList.add('active', 'text-accentBlue', 'border-accentBlue', 'bg-blue-50/50', 'dark:bg-blue-900/10');
@@ -1318,7 +1335,7 @@ window.setRiskTab = function (tabId) {
 
     // Show Content
     document.querySelectorAll('.risk-content').forEach(el => el.classList.add('hidden'));
-    const targetContent = document.getElementById(`risk - ${tabId}`);
+    const targetContent = document.getElementById(`risk-${tabId}`);
     if (targetContent) {
         targetContent.classList.remove('hidden');
         targetContent.classList.add('fade-in');
