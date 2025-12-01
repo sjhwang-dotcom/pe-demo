@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="modern">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepAuto – Corporate PE AI Console</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@300;500;700&family=Merriweather:wght@300;400;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind (CDN for simplicity) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/design-system.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="overflow-hidden font-sans text-sm tracking-tight antialiased selection:bg-accentBlue selection:text-white">
+
+    <div class="flex h-screen w-full overflow-hidden bg-bgBody">
+        <!-- GLOBAL NAV RAIL -->
+        <aside class="w-16 bg-bgPanel border-r border-borderSubtle flex flex-col items-center py-4 z-50 shrink-0">
+            <!-- Logo -->
+            <div
+                class="w-8 h-8 rounded bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg text-white font-head font-bold text-lg mb-8">
+                D
+            </div>
+
+            <!-- Nav Items -->
+            <a href="index.html"
+                class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 transition-colors mb-2"
+                title="Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </a>
+
+            <a href="agentic-data-warehouse.html"
+                class="w-10 h-10 flex items-center justify-center rounded-lg text-textMuted hover:text-textMain hover:bg-bgSoft transition-colors mb-2"
+                title="Data Warehouse">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                </svg>
+            </a>
+
+            <a href="knowledge-base.html"
+                class="w-10 h-10 flex items-center justify-center rounded-lg text-textMuted hover:text-textMain hover:bg-bgSoft transition-colors mb-2"
+                title="Knowledge Base">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </a>
+        </aside>
+
+        <!-- APP SHELL (Existing Content Wrapped) -->
+        <div class="app-shell flex-1 min-w-0 h-full flex flex-col">
+            <div class="frame h-full flex flex-col">
+
+                <!-- HEADER -->
+                <header
+                    class="h-14 border-b border-borderSubtle bg-bgPanel flex items-center justify-between px-4 shrink-0 z-30">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <!-- Removed redundant logo since it's in the rail now, or keep as page title context -->
+                            <div>
+                                <h1 class="font-head font-bold text-lg leading-tight text-textMain tracking-tight">
+                                    DeepAuto
+                                </h1>
+                                <div class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Private
+                                    Equity
+                                    Console</div>
+                            </div>
+                        </div>
+
+                        <!-- NAVIGATION TABS -->
+                        <nav
+                            class="hidden md:flex items-center gap-1 ml-6 bg-bgSoft p-1 rounded-lg border border-borderSubtle">
+                            <button onclick="setTab('sourcing')"
+                                class="nav-tab px-4 py-1.5 rounded-md text-xs font-medium text-textMuted hover:text-textMain transition-all active">Sourcing</button>
+                            <button onclick="setTab('evaluation')"
+                                class="nav-tab px-4 py-1.5 rounded-md text-xs font-medium text-textMuted hover:text-textMain transition-all">Evaluation</button>
+                            <button onclick="setTab('diligence')"
+                                class="nav-tab px-4 py-1.5 rounded-md text-xs font-medium text-textMuted hover:text-textMain transition-all">Diligence</button>
+                            <button onclick="setTab('portfolio')"
+                                class="nav-tab px-4 py-1.5 rounded-md text-xs font-medium text-textMuted hover:text-textMain transition-all">Portfolio</button>
+                        </nav>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <!-- DESIGN SELECTOR -->
+                        <div class="flex items-center gap-2 mr-2">
+                            <label for="designSelect"
+                                class="text-[10px] text-textMuted uppercase font-bold tracking-wider">Design:</label>
+                            <select id="designSelect"
+                                class="bg-bgSoft border border-borderSubtle text-textMain text-xs rounded px-2 py-1 outline-none focus:border-accentBlue">
+                                <option value="modern">Modern Fintech</option>
+                                <option value="institutional">Institutional (Wall St)</option>
+                                <option value="terminal">Terminal (Bloomberg)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="toggleLumina()"
+                            class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-800/30 text-[11px] font-semibold tracking-wide transition-all shadow-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Lumina
+                        </button>
+
+                        <button id="themeToggleBtn"
+                            class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-bgSoft text-textMuted hover:text-textMain transition-colors">
+                            <svg id="themeIconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                            <svg id="themeIconMoon" class="w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- BODY LAYOUT -->
+                <div
+                    class="flex flex-col lg:flex-row flex-1 overflow-hidden relative bg-bgBody transition-colors duration-300">
+
+                    <!-- LEFT SIDEBAR -->
+                    <aside
+                        class="w-full lg:w-72 h-auto lg:h-full bg-bgPanel border-b lg:border-b-0 lg:border-r border-borderSubtle flex flex-col shrink-0 z-20 transition-colors duration-300">
+                        <div class="p-4 border-b border-borderSubtle">
+                            <h3 class="font-head font-bold text-[10px] uppercase tracking-widest text-textMuted mb-1"
+                                id="sidebarTitle">Fund Assets</h3>
+                            <p class="text-[10px] text-textMuted opacity-70" id="sidebarDesc">All Active Holdings</p>
+                        </div>
+                        <div class="flex-1 overflow-x-auto lg:overflow-y-auto lg:overflow-x-hidden flex flex-row lg:flex-col p-2 space-x-2 lg:space-x-0 lg:space-y-1"
+                            id="sidebarList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </aside>
+
+                    <!-- MAIN CONTENT AREA -->
+                    <main class="flex-1 overflow-hidden relative bg-bgBody">
+
+                        <!-- VIEW: SOURCING -->
+                        <div id="view-sourcing" class="absolute inset-0 p-6 overflow-y-auto space-y-6 fade-in">
+                            <!-- Top Row: Funnel & Sources -->
+                            <div class="grid grid-cols-12 gap-4">
+                                <div class="col-span-12 lg:col-span-7 glass-panel rounded-xl p-5">
+                                    <h2 class="font-head text-base font-bold text-textMain mb-3">Deal Origination Funnel
+                                        (LTM)</h2>
+                                    <div class="h-40">
+                                        <canvas id="sourcingFunnelChart"></canvas>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-span-12 lg:col-span-5 glass-panel rounded-xl p-5 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex justify-between items-center mb-3">
+                                            <h2 class="font-head text-base font-bold text-textMain">Connected Sources
+                                            </h2>
+                                            <span
+                                                class="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-[9px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">●
+                                                5 Live</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div
+                                                class="flex items-center gap-2 p-2 rounded bg-bgSoft border border-borderSubtle">
+                                                <div class="w-2 h-2 rounded-full bg-accentTeal animate-pulse"></div>
+                                                <div>
+                                                    <div class="text-[10px] font-bold text-textMain">Grata</div>
+                                                    <div class="text-[9px] text-textMuted">Private Co Search</div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-2 p-2 rounded bg-bgSoft border border-borderSubtle">
+                                                <div class="w-2 h-2 rounded-full bg-accentBlue"></div>
+                                                <div>
+                                                    <div class="text-[10px] font-bold text-textMain">Pitchbook</div>
+                                                    <div class="text-[9px] text-textMuted">Transaction Data</div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-2 p-2 rounded bg-bgSoft border border-borderSubtle">
+                                                <div class="w-2 h-2 rounded-full bg-accentPurple"></div>
+                                                <div>
+                                                    <div class="text-[10px] font-bold text-textMain">Salesforce</div>
+                                                    <div class="text-[9px] text-textMuted">Proprietary CRM</div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-2 p-2 rounded bg-bgSoft border border-borderSubtle">
+                                                <div class="w-2 h-2 rounded-full bg-accentGold"></div>
+                                                <div>
+                                                    <div class="text-[10px] font-bold text-textMain">LinkedIn</div>
+                                                    <div class="text-[9px] text-textMuted">Talent Signal</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Middle Row: Thesis & Search -->
+                            <div class="glass-panel rounded-xl p-5">
+                                <div
+                                    class="mb-4 p-3 bg-bgSoft rounded-lg border border-borderSubtle border-l-4 border-l-accentBlue flex justify-between items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex flex-col">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span
+                                                    class="text-[10px] font-bold text-accentBlue uppercase tracking-wider"
+                                                    id="mandate-title">Fund I Mandate</span>
+                                                <div class="flex bg-bgBody rounded border border-borderSubtle p-0.5">
+                                                    <button onclick="switchSourcingFund('fund1')" id="src-btn-fund1"
+                                                        class="px-2 py-0.5 text-[9px] font-bold rounded bg-accentBlue text-white shadow-sm transition-all">Fund
+                                                        I</button>
+                                                    <button onclick="switchSourcingFund('fund2')" id="src-btn-fund2"
+                                                        class="px-2 py-0.5 text-[9px] font-bold rounded text-textMuted hover:text-textMain transition-all">Fund
+                                                        II</button>
+                                                </div>
+                                            </div>
+                                            <div class="flex gap-4 text-xs text-textMain font-medium"
+                                                id="mandate-criteria">
+                                                <span><strong>EBITDA:</strong> $3M-$40M</span>
+                                                <span><strong>Sectors:</strong> HVAC, Ind. Services, Healthcare</span>
+                                                <span><strong>Geo:</strong> Sun Belt, Midwest</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button onclick="openMandateModal()"
+                                        class="text-[10px] text-textMuted hover:text-textMain underline">Edit
+                                        Mandate</button>
+                                </div>
+
+                                <div class="relative bg-bgBody rounded-lg border border-borderSubtle p-2">
+                                    <textarea id="sourcingPrompt"
+                                        class="w-full h-20 bg-transparent text-sm text-textMain focus:outline-none resize-none font-sans placeholder:text-textMuted p-2"
+                                        placeholder="Describe your target...">Targeting founder-owned HVAC and plumbing service providers in the Sun Belt region (FL, TX, GA, AZ) with $5M-$15M EBITDA. Focus on companies with >60% recurring maintenance revenue and low customer concentration.</textarea>
+                                    <div
+                                        class="flex justify-between items-center mt-2 pt-2 border-t border-borderSubtle px-2">
+                                        <div class="flex gap-2">
+                                            <button
+                                                class="text-[10px] bg-bgPanel border border-borderSubtle px-2 py-1 rounded text-textMuted hover:text-textMain">+
+                                                Add-on Filter</button>
+                                            <button
+                                                class="text-[10px] bg-bgPanel border border-borderSubtle px-2 py-1 rounded text-textMuted hover:text-textMain">+
+                                                Exclude Brokers</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mandate Edit Modal -->
+                            <div id="mandateModal"
+                                class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+                                <div class="bg-bgPanel border border-borderSubtle rounded-xl shadow-2xl w-[600px] max-w-[90vw] transform scale-95 transition-transform duration-300"
+                                    id="mandateModalContent">
+                                    <div class="p-5 border-b border-borderSubtle flex justify-between items-center">
+                                        <h3 class="font-head font-bold text-lg text-textMain">Refine Investment Mandate
+                                        </h3>
+                                        <button onclick="closeMandateModal()"
+                                            class="text-textMuted hover:text-textMain">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="p-6 space-y-4">
+                                        <div>
+                                            <label
+                                                class="block text-xs font-bold text-textMuted uppercase tracking-wider mb-2">Natural
+                                                Language Criteria</label>
+                                            <textarea id="modalMandateInput"
+                                                class="w-full h-32 bg-bgBody border border-borderSubtle rounded-lg p-3 text-sm text-textMain focus:outline-none focus:border-accentBlue transition-colors resize-none"
+                                                placeholder="e.g., Looking for B2B SaaS companies in North America with $5M-$20M ARR, growing >20% YoY, with low churn. Avoid O&G exposure."></textarea>
+                                        </div>
+
+                                        <div class="flex justify-end">
+                                            <button onclick="refineMandateAI()"
+                                                class="flex items-center gap-2 px-4 py-2 bg-accentBlue text-white rounded-lg text-xs font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                </svg>
+                                                Refine with AI
+                                            </button>
+                                        </div>
+
+                                        <div id="aiRefinementArea"
+                                            class="hidden border-t border-borderSubtle pt-4 mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                                            <div class="flex justify-between items-center mb-3">
+                                                <span class="text-xs font-bold text-accentTeal flex items-center gap-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    AI Structured Rules
+                                                </span>
+                                                <span class="text-[10px] text-textMuted">Ambiguity Reduced</span>
+                                            </div>
+                                            <div class="flex flex-wrap gap-2" id="aiTagsContainer">
+                                                <!-- Tags will be injected here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="p-5 border-t border-borderSubtle bg-bgSoft/30 rounded-b-xl flex justify-end gap-3">
+                                        <button onclick="closeMandateModal()"
+                                            class="px-4 py-2 rounded-lg text-xs font-bold text-textMuted hover:text-textMain hover:bg-bgSoft transition-colors">Cancel</button>
+                                        <button onclick="saveMandate()"
+                                            class="px-6 py-2 rounded-lg text-xs font-bold bg-textMain text-bgPanel hover:opacity-90 transition-opacity shadow-lg">Save
+                                            Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Row: Results Table -->
+                            <div class="glass-panel overflow-hidden flex flex-col">
+                                <div
+                                    class="p-4 border-b border-borderSubtle flex justify-between items-center bg-bgSoft/30">
+                                    <h3 class="font-bold text-sm text-textMain">AI-Ranked Pipeline Matches</h3>
+                                    <span class="text-[10px] text-textMuted font-mono" id="sourcingCount">Generating
+                                        Matches...</span>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr
+                                                class="text-[10px] uppercase tracking-wider text-textMuted border-b border-borderSubtle bg-bgSoft/50">
+                                                <th class="px-5 py-3 font-medium">Company</th>
+                                                <th class="px-5 py-3 font-medium">Source</th>
+                                                <th class="px-5 py-3 font-medium text-right">Rev</th>
+                                                <th class="px-5 py-3 font-medium text-right">EBITDA</th>
+                                                <th class="px-5 py-3 font-medium text-right">Margin</th>
+                                                <th class="px-5 py-3 font-medium text-center">Lead</th>
+                                                <th class="px-5 py-3 font-medium text-center">AI Score</th>
+                                                <th class="px-5 py-3 font-medium text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="sourcingTable"
+                                            class="text-xs text-textMain divide-y divide-borderSubtle">
+                                            <!-- JS Populated -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW: EVALUATION -->
+                        <div id="view-evaluation" class="absolute inset-0 p-6 overflow-y-auto space-y-6 hidden">
+                            <!-- Header -->
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h2 class="font-head text-xl font-bold text-textMain flex items-center gap-3">
+                                        <span id="eval-deal-name">SunState HVAC</span>
+                                        <span id="eval-tags" class="flex gap-2">
+                                            <!-- Tags injected via JS -->
+                                        </span>
+                                    </h2>
+                                    <p class="text-xs text-textMuted mt-1">Deal Evaluation & Modeling</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button
+                                        class="px-3 py-1.5 rounded border border-borderSubtle text-xs font-bold text-textMain hover:bg-bgSoft transition-colors">Data
+                                        Room</button>
+                                    <button
+                                        class="px-3 py-1.5 rounded bg-accentBlue text-white text-xs font-bold hover:bg-blue-600 transition-colors flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg>
+                                        Download Model
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Main Grid -->
+                            <div class="grid grid-cols-12 gap-6">
+                                <!-- LEFT COLUMN (Span 4) -->
+                                <div class="col-span-12 lg:col-span-4 space-y-6">
+                                    <!-- Deal Overview Card -->
+                                    <div class="glass-panel p-5 rounded-xl">
+                                        <h3 class="font-head font-bold text-sm text-textMain mb-4">Deal Overview</h3>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <div class="text-[10px] text-textMuted uppercase">Entry EV/EBITDA</div>
+                                                <div id="eval-entry-multiple"
+                                                    class="text-lg font-bold text-textMain font-mono">9.8x</div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[10px] text-textMuted uppercase">LTM EBITDA</div>
+                                                <div id="eval-ltm-ebitda"
+                                                    class="text-lg font-bold text-textMain font-mono">
+                                                    $8.2M</div>
+                                            </div>
+                                            <div class="col-span-2 border-t border-borderSubtle pt-3 mt-1">
+                                                <div class="flex justify-between items-center">
+                                                    <div class="text-[10px] text-textMuted uppercase">Net Leverage</div>
+                                                    <div class="flex items-center gap-2">
+                                                        <span id="eval-leverage"
+                                                            class="text-lg font-bold text-accentRed font-mono">5.5x</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="h-4 w-4 text-accentRed" viewBox="0 0 24 24"
+                                                            fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path
+                                                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                                            <line x1="12" y1="9" x2="12" y2="13" />
+                                                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Trading Comps -->
+                                    <div class="glass-panel p-5 rounded-xl">
+                                        <h3 class="font-head font-bold text-sm text-textMain mb-3">Trading Comps</h3>
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-xs text-left">
+                                                <thead>
+                                                    <tr class="text-textMuted border-b border-borderSubtle">
+                                                        <th class="pb-2 font-medium">Metric</th>
+                                                        <th class="pb-2 font-medium text-right">Target</th>
+                                                        <th class="pb-2 font-medium text-right">Peer Avg</th>
+                                                        <th class="pb-2 font-medium text-right">Delta</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="eval-comps-body" class="font-mono">
+                                                    <!-- Populated by JS -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sensitivity Matrix -->
+                                    <div class="glass-panel p-5 rounded-xl">
+                                        <h3 class="font-head font-bold text-sm text-textMain mb-3">Returns Sensitivity
+                                            (IRR)
+                                        </h3>
+                                        <div class="overflow-x-auto">
+                                            <div id="eval-sensitivity-matrix" class="min-w-full">
+                                                <!-- Populated by JS -->
+                                            </div>
+                                        </div>
+                                        <div class="text-[9px] text-textMuted text-center mt-2">Exit Multiple (X-Axis)
+                                            vs.
+                                            Growth Rate (Y-Axis)</div>
+                                    </div>
+                                </div>
+
+                                <!-- RIGHT COLUMN (Span 8) -->
+                                <div class="col-span-12 lg:col-span-8 space-y-6">
+                                    <!-- Charts Row -->
+                                    <div class="grid grid-cols-2 gap-6 h-[320px]">
+                                        <!-- Peer Benchmarking -->
+                                        <div class="glass-panel p-5 rounded-xl flex flex-col">
+                                            <h3 class="font-head font-bold text-sm text-textMain mb-2">Peer Benchmarking
+                                            </h3>
+                                            <div class="flex-1 relative">
+                                                <canvas id="evalScatterChart"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- Valuation Waterfall -->
+                                        <div class="glass-panel p-5 rounded-xl flex flex-col">
+                                            <h3 class="font-head font-bold text-sm text-textMain mb-2">Valuation Bridge
+                                            </h3>
+                                            <div class="flex-1 relative">
+                                                <canvas id="evalWaterfallChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Model Architect Copilot -->
+                                    <div class="glass-panel p-5 rounded-xl flex flex-col h-[300px]">
+                                        <div class="flex items-center gap-2 mb-3 border-b border-borderSubtle pb-3">
+                                            <div class="p-1.5 bg-accentPurple/10 rounded text-accentPurple">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path
+                                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                                </svg>
+                                            </div>
+                                            <h3 class="font-head font-bold text-sm text-textMain">Model Architect
+                                                Copilot
+                                            </h3>
+                                            <button
+                                                class="ml-auto text-[10px] font-bold text-accentBlue hover:underline">Adjust
+                                                Drivers</button>
+                                        </div>
+
+                                        <!-- Chat History -->
+                                        <div id="copilot-history" class="flex-1 overflow-y-auto space-y-3 mb-3 pr-2">
+                                            <!-- Mock History -->
+                                            <div class="flex gap-3">
+                                                <div
+                                                    class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[10px] font-bold text-gray-600 shrink-0">
+                                                    U</div>
+                                                <div
+                                                    class="bg-bgSoft rounded-lg rounded-tl-none p-2 text-xs text-textMain max-w-[80%]">
+                                                    Create a valuation model focusing on residential HVAC recurring
+                                                    revenue.
+                                                </div>
+                                            </div>
+                                            <div class="flex gap-3 flex-row-reverse">
+                                                <div
+                                                    class="w-6 h-6 rounded-full bg-accentPurple flex items-center justify-center text-[10px] font-bold text-white shrink-0">
+                                                    AI</div>
+                                                <div
+                                                    class="bg-accentPurple/10 rounded-lg rounded-tr-none p-2 text-xs text-textMain max-w-[80%]">
+                                                    I've structured a DCF & LBO model based on residential HVAC
+                                                    parameters.
+                                                    <div class="flex gap-1 mt-2 flex-wrap">
+                                                        <span
+                                                            class="px-1.5 py-0.5 rounded bg-white/50 border border-accentPurple/20 text-[9px] font-mono text-accentPurple">Retention:
+                                                            95%</span>
+                                                        <span
+                                                            class="px-1.5 py-0.5 rounded bg-white/50 border border-accentPurple/20 text-[9px] font-mono text-accentPurple">WACC:
+                                                            11.5%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Input -->
+                                        <div class="relative">
+                                            <input type="text"
+                                                class="w-full bg-bgBody border border-borderSubtle rounded-lg pl-3 pr-10 py-2.5 text-xs text-textMain focus:border-accentBlue outline-none"
+                                                placeholder="Ask to adjust assumptions (e.g., 'Weight DCF 60%')...">
+                                            <button class="absolute right-2 top-2 text-accentBlue hover:text-blue-600">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <line x1="22" y1="2" x2="11" y2="13" />
+                                                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Deal Team & Conviction -->
+                                    <div class="grid grid-cols-2 gap-6">
+                                        <!-- Team -->
+                                        <div class="glass-panel p-4 rounded-xl">
+                                            <h3
+                                                class="font-head font-bold text-xs text-textMain mb-3 uppercase tracking-wider">
+                                                Deal Team</h3>
+                                            <div id="eval-team-list" class="space-y-2">
+                                                <!-- Populated by JS -->
+                                            </div>
+                                        </div>
+                                        <!-- Conviction -->
+                                        <div class="glass-panel p-4 rounded-xl">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <h3
+                                                    class="font-head font-bold text-xs text-textMain uppercase tracking-wider">
+                                                    Conviction Score</h3>
+                                                <span id="eval-score"
+                                                    class="text-lg font-bold text-accentBlue">80/100</span>
+                                            </div>
+                                            <div class="w-full bg-bgSoft h-2 rounded-full overflow-hidden mb-3">
+                                                <div id="eval-score-bar" class="bg-accentBlue h-full"
+                                                    style="width: 80%">
+                                                </div>
+                                            </div>
+                                            <div id="eval-flags" class="space-y-1">
+                                                <!-- Populated by JS -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW: DILIGENCE -->
+                        <div id="view-diligence" class="absolute inset-0 p-6 overflow-y-auto space-y-6 hidden">
+                            <div
+                                class="flex flex-col sm:flex-row justify-between items-start sm:items-center shrink-0 gap-4">
+                                <div>
+                                    <h2 class="font-head text-xl font-bold text-textMain">Diligence Control Tower</h2>
+                                    <p class="text-xs text-textMuted mt-0.5">Target: <strong>HCA Healthcare</strong> •
+                                        Status: <span class="text-accentBlue font-bold">Confirmatory (Week 4)</span></p>
+                                </div>
+                                <div class="flex gap-4 items-center">
+                                    <button onclick="generateICMemo()"
+                                        class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded bg-accentPurple text-white text-[10px] font-bold shadow hover:bg-purple-600 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
+                                        Generate Final IC Memo
+                                    </button>
+                                    <div class="flex gap-4 text-[10px] border-l border-borderSubtle pl-4">
+                                        <div class="text-right">
+                                            <div class="text-textMuted uppercase font-bold">VDR Status</div>
+                                            <div class="font-mono font-bold text-textMain">1,840 Files</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-textMuted uppercase font-bold">Red Flags</div>
+                                            <div class="font-mono font-bold text-accentRed">4 Critical</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-12 gap-4 flex-1 h-[calc(100%-4rem)]">
+                                <!-- VDR Sidebar -->
+                                <div class="col-span-12 md:col-span-3 h-full overflow-hidden">
+                                    <div class="glass-panel rounded-xl h-full flex flex-col">
+                                        <div class="p-4 border-b border-borderSubtle bg-bgPanel">
+                                            <h3
+                                                class="font-head font-bold text-xs text-textMain uppercase tracking-wider">
+                                                Data Room Index</h3>
+                                        </div>
+                                        <div class="flex-1 overflow-y-auto p-2 space-y-3 text-textMain">
+                                            <div>
+                                                <div
+                                                    class="px-2 py-1 text-[10px] font-bold text-textMuted uppercase tracking-wider mb-1">
+                                                    01. Financial</div>
+                                                <div class="space-y-1">
+                                                    <div
+                                                        class="p-2 rounded bg-bgSoft border border-borderSubtle text-xs flex justify-between cursor-pointer hover:border-accentBlue transition-colors">
+                                                        <span>FY23_QofE_Final.xlsx</span><span
+                                                            class="text-[9px] text-accentTeal">New</span>
+                                                    </div>
+                                                    <div
+                                                        class="p-2 rounded hover:bg-bgSoft border border-transparent text-xs cursor-pointer">
+                                                        Customer_Churn.csv</div>
+                                                    <div
+                                                        class="p-2 rounded hover:bg-bgSoft border border-transparent text-xs cursor-pointer">
+                                                        Unit_Economics.pdf</div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    class="px-2 py-1 text-[10px] font-bold text-textMuted uppercase tracking-wider mb-1 mt-2">
+                                                    02. Legal</div>
+                                                <div class="space-y-1">
+                                                    <div
+                                                        class="p-2 rounded hover:bg-bgSoft border border-transparent text-xs cursor-pointer">
+                                                        Disclosure_Sched.docx</div>
+                                                    <div
+                                                        class="p-2 rounded hover:bg-bgSoft border border-transparent text-xs cursor-pointer">
+                                                        Litigation_Sum.pdf</div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    class="px-2 py-1 text-[10px] font-bold text-textMuted uppercase tracking-wider mb-1 mt-2">
+                                                    03. Tech</div>
+                                                <div class="space-y-1">
+                                                    <div
+                                                        class="p-2 rounded hover:bg-bgSoft border border-transparent text-xs cursor-pointer">
+                                                        OpenSource_Scan.json</div>
+                                                    <div
+                                                        class="p-2 rounded hover:bg-bgSoft border border-transparent text-xs cursor-pointer">
+                                                        AWS_Cost_Opt.pptx</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Report Area -->
+                                <div
+                                    class="col-span-12 md:col-span-9 glass-panel rounded-xl flex flex-col overflow-hidden">
+                                    <div class="flex border-b border-borderSubtle bg-bgPanel overflow-x-auto">
+                                        <button onclick="setRiskTab('fin')" id="tab-risk-fin"
+                                            class="risk-tab active px-5 py-3 text-xs font-bold text-accentBlue border-b-2 border-accentBlue bg-blue-50/50 dark:bg-blue-900/10 transition-colors whitespace-nowrap">Financial
+                                            (QofE)</button>
+                                        <button onclick="setRiskTab('acct')" id="tab-risk-acct"
+                                            class="risk-tab px-5 py-3 text-xs font-bold text-textMuted border-b-2 border-transparent hover:text-textMain transition-colors whitespace-nowrap">Accounting</button>
+                                        <button onclick="setRiskTab('legal')" id="tab-risk-legal"
+                                            class="risk-tab px-5 py-3 text-xs font-bold text-textMuted border-b-2 border-transparent hover:text-textMain transition-colors whitespace-nowrap">Legal
+                                            & HR</button>
+                                        <button onclick="setRiskTab('tech')" id="tab-risk-tech"
+                                            class="risk-tab px-5 py-3 text-xs font-bold text-textMuted border-b-2 border-transparent hover:text-textMain transition-colors whitespace-nowrap">Tech
+                                            & Cyber</button>
+                                    </div>
+                                    <div class="flex-1 overflow-y-auto p-6 bg-bgBody/50">
+                                        <!-- Financial Content -->
+                                        <div id="risk-fin" class="risk-content space-y-4 fade-in">
+                                            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-accentGold">
+                                                <div class="flex justify-between mb-2">
+                                                    <h4 class="font-bold text-sm text-textMain text-accentGold">Finding
+                                                        #1:
+                                                        Pro Forma "Synergies"</h4>
+                                                    <span class="text-[10px] font-mono text-textMuted">Impact: Risk
+                                                        High</span>
+                                                </div>
+                                                <p class="text-xs text-textMain leading-relaxed opacity-90">
+                                                    Seller includes $2.5M of "Procurement Savings" in Adjusted EBITDA
+                                                    based
+                                                    on unverified vendor quotes.
+                                                    Our analysis suggests only $1.0M is achievable in Year 1.
+                                                </p>
+                                            </div>
+                                            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-accentRed">
+                                                <div class="flex justify-between mb-2">
+                                                    <h4 class="font-bold text-sm text-textMain text-accentRed">Finding
+                                                        #2:
+                                                        Customer Concentration</h4>
+                                                    <span class="text-[10px] font-mono text-textMuted">Impact:
+                                                        Critical</span>
+                                                </div>
+                                                <p class="text-xs text-textMain leading-relaxed opacity-90">
+                                                    Top 3 customers account for 45% of revenue. The largest customer
+                                                    (22% of
+                                                    Rev) has a contract expiring in 6 months
+                                                    and has issued an RFP, creating significant renewal risk.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Accounting Content -->
+                                        <div id="risk-acct" class="risk-content space-y-4 hidden">
+                                            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-accentGold">
+                                                <div class="flex justify-between mb-2">
+                                                    <h4 class="font-bold text-sm text-textMain text-accentGold">
+                                                        Finding #1: Revenue Recognition (ASC 606)</h4>
+                                                    <span class="text-[10px] font-mono text-textMuted">Impact:
+                                                        Medium ($1.2M)</span>
+                                                </div>
+                                                <p class="text-xs text-textMain leading-relaxed opacity-90">
+                                                    Inconsistent application of ASC 606 across acquired
+                                                    subsidiaries. Specifically, timing of revenue recognition for
+                                                    bundled contracts
+                                                    varies, leading to a potential overstatement of FY2024 revenue
+                                                    by ~$1.2M.
+                                                </p>
+                                            </div>
+                                            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-textMuted">
+                                                <div class="flex justify-between mb-2">
+                                                    <h4 class="font-bold text-sm text-textMain">Finding #2:
+                                                        Inventory Valuation</h4>
+                                                    <span class="text-[10px] font-mono text-textMuted">Impact: Low
+                                                        ($0.5M)</span>
+                                                </div>
+                                                <p class="text-xs text-textMain leading-relaxed opacity-90">
+                                                    Obsolete inventory reserve appears understated by ~$500k based
+                                                    on independent aging analysis.
+                                                    High-value SKUs have not moved in >12 months but remain at full
+                                                    carrying value.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Legal Content -->
+                                        <div id="risk-legal" class="risk-content space-y-4 hidden">
+                                            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-accentRed">
+                                                <div class="flex justify-between mb-2">
+                                                    <h4 class="font-bold text-sm text-textMain text-accentRed">
+                                                        Finding #1: Physician Staffing Litigation</h4>
+                                                    <span class="text-[10px] font-mono text-textMuted">Exposure:
+                                                        $15M</span>
+                                                </div>
+                                                <p class="text-xs text-textMain leading-relaxed opacity-90">
+                                                    Ongoing litigation in Texas regarding breach of non-compete
+                                                    clauses. While in discovery, an adverse ruling could result
+                                                    in damages up to $15M. Probability of full loss estimated at
+                                                    <20%. </p>
+                                            </div>
+                                            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-accentPurple">
+                                                <div class="flex justify-between mb-2">
+                                                    <h4 class="font-bold text-sm text-textMain text-accentPurple">
+                                                        Finding #2: FLSA Class Action</h4>
+                                                    <span class="text-[10px] font-mono text-textMuted">Exposure:
+                                                        $5M</span>
+                                                </div>
+                                                <p class="text-xs text-textMain leading-relaxed opacity-90">
+                                                    Pending class action regarding unpaid overtime for off-the-clock
+                                                    work by nursing staff.
+                                                    Preliminary settlement discussions suggest a payout in the $3-5M
+                                                    range.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tech Content -->
+                                        <div id="risk-tech" class="risk-content space-y-4 hidden">
+                                            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-accentRed">
+                                                <div class="flex justify-between mb-2">
+                                                    <h4 class="font-bold text-sm text-textMain text-accentRed">
+                                                        Finding #1:
+                                                        Legacy Tech Debt</h4>
+                                                    <span class="text-[10px] font-mono text-textMuted">Cost: $2.5M
+                                                        Capex</span>
+                                                </div>
+                                                <p class="text-xs text-textMain leading-relaxed opacity-90">
+                                                    Core billing system is running on end-of-life infrastructure.
+                                                    Immediate
+                                                    migration required post-close.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW: PORTFOLIO -->
+                        <div id="view-portfolio" class="absolute inset-0 p-6 overflow-y-auto space-y-6 hidden">
+
+                            <!-- Aggregate View -->
+                            <div id="portfolio-aggregate-view" class="space-y-6">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="flex items-center gap-3">
+                                        <h2 class="font-head text-xl font-bold text-textMain">Fund Performance</h2>
+                                        <!-- Fund Selector Moved Here -->
+                                        <div
+                                            class="bg-bgBody border border-borderSubtle rounded-lg p-1 flex gap-1 ml-4">
+                                            <button onclick="switchFund('all')" id="btn-all"
+                                                class="fund-btn px-3 py-1 rounded text-[10px] font-bold transition-all bg-bgPanel text-textMain shadow-sm active">Aggregate</button>
+                                            <button onclick="switchFund('fund1')" id="btn-fund1"
+                                                class="fund-btn px-3 py-1 rounded text-[10px] font-bold text-textMuted hover:text-textMain transition-all">Fund
+                                                I</button>
+                                            <button onclick="switchFund('fund2')" id="btn-fund2"
+                                                class="fund-btn px-3 py-1 rounded text-[10px] font-bold text-textMuted hover:text-textMain transition-all">Fund
+                                                II</button>
+                                        </div>
+                                    </div>
+                                    <button onclick="openLPReport()"
+                                        class="bg-textMain text-bgPanel px-4 py-2 rounded text-xs font-bold hover:opacity-80 shadow-lg flex items-center gap-2 transition-all">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
+                                        Generate LP Report
+                                    </button>
+                                </div>
+
+                                <!-- KPIs -->
+                                <div class="grid grid-cols-5 gap-4">
+                                    <div class="glass-panel p-4 rounded-xl flex flex-col justify-between h-20">
+                                        <span
+                                            class="text-[10px] font-bold text-textMuted uppercase tracking-widest">Gross
+                                            IRR</span>
+                                        <div class="font-mono text-2xl font-bold text-accentTeal" id="kpi-irr">22.5%
+                                        </div>
+                                    </div>
+                                    <div class="glass-panel p-4 rounded-xl flex flex-col justify-between h-20">
+                                        <span
+                                            class="text-[10px] font-bold text-textMuted uppercase tracking-widest">MOIC</span>
+                                        <div class="font-mono text-2xl font-bold text-accentGold" id="kpi-moic">1.52x
+                                        </div>
+                                    </div>
+                                    <div class="glass-panel p-4 rounded-xl flex flex-col justify-between h-20">
+                                        <span
+                                            class="text-[10px] font-bold text-textMuted uppercase tracking-widest">Invested</span>
+                                        <div class="font-mono text-2xl font-bold text-textMain" id="kpi-invested">$975M
+                                        </div>
+                                    </div>
+                                    <div class="glass-panel p-4 rounded-xl flex flex-col justify-between h-20">
+                                        <span
+                                            class="text-[10px] font-bold text-textMuted uppercase tracking-widest">DPI</span>
+                                        <div class="font-mono text-2xl font-bold text-textMain" id="kpi-dpi">0.38x</div>
+                                    </div>
+                                    <div class="glass-panel p-4 rounded-xl flex flex-col justify-between h-20">
+                                        <span
+                                            class="text-[10px] font-bold text-textMuted uppercase tracking-widest">Assets</span>
+                                        <div class="font-mono text-2xl font-bold text-textMain" id="kpi-assets">11</div>
+                                    </div>
+                                </div>
+
+                                <!-- Chart Row -->
+                                <div class="grid grid-cols-12 gap-4">
+                                    <!-- Trend Chart with Controls -->
+                                    <div class="col-span-12 lg:col-span-8 glass-panel rounded-xl p-5 flex flex-col">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <h3 class="font-head font-bold text-sm text-textMain">Quarterly EBITDA Trend
+                                            </h3>
+                                        </div>
+                                        <div class="flex-1 min-h-[240px] relative">
+                                            <canvas id="pfTrendChart"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sector Alloc -->
+                                    <div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-5 flex flex-col">
+                                        <h3 class="font-head font-bold text-sm text-textMain mb-4">NAV Allocation</h3>
+                                        <div class="flex-1 min-h-[240px] relative">
+                                            <canvas id="pfSectorChart"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- Value Bridge -->
+                                    <div class="col-span-12 glass-panel rounded-xl p-5">
+                                        <h3 class="font-head font-bold text-sm text-textMain mb-4">Value Creation Bridge
+                                            ($M)
+                                        </h3>
+                                        <div class="h-48 relative">
+                                            <canvas id="pfBridgeChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Assets Table -->
+                                <div
+                                    class="glass-panel rounded-xl border border-borderSubtle overflow-hidden flex flex-col min-h-[300px]">
+                                    <div class="px-5 py-3 border-b border-borderSubtle bg-bgPanel">
+                                        <h3 class="font-head font-bold text-sm text-textMain">Detailed Asset Performance
+                                        </h3>
+                                    </div>
+                                    <div class="flex-1 overflow-auto bg-bgPanel">
+                                        <table class="w-full text-left">
+                                            <thead class="bg-bgSoft sticky top-0">
+                                                <tr
+                                                    class="text-[10px] uppercase text-textMuted border-b border-borderSubtle">
+                                                    <th class="px-5 py-2 font-bold">Portfolio Company</th>
+                                                    <th class="px-5 py-2 font-bold">Sector</th>
+                                                    <th class="px-5 py-2 font-bold text-right">Inv. Date</th>
+                                                    <th class="px-5 py-2 font-bold text-right">Cost ($M)</th>
+                                                    <th class="px-5 py-2 font-bold text-right">FMV ($M)</th>
+                                                    <th class="px-5 py-2 font-bold text-right">LTM EBITDA</th>
+                                                    <th class="px-5 py-2 font-bold text-center">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pfTableBody"
+                                                class="text-xs text-textMain divide-y divide-borderSubtle">
+                                                <!-- Populated by JS -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detail View (Hidden by default) -->
+                            <div id="portfolio-detail-view"
+                                class="hidden space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                                <!-- Header -->
+                                <div class="glass-panel p-6 rounded-xl flex justify-between items-start">
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <button onclick="closeAssetDetail()"
+                                                class="text-textMuted hover:text-textMain flex items-center gap-1 text-xs font-bold transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                                </svg>
+                                                Portfolio
+                                            </button>
+                                            <span class="text-textMuted text-xs">/</span>
+                                            <span class="text-textMain text-xs font-bold"
+                                                id="detail-breadcrumb-name">Asset
+                                                Name</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 mt-2">
+                                            <h1 class="text-2xl font-bold text-textMain" id="detail-name">Senior Care
+                                                Therapy</h1>
+                                            <span
+                                                class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700"
+                                                id="detail-status">Performing</span>
+                                        </div>
+                                        <div class="flex gap-4 mt-2 text-xs text-textMuted">
+                                            <span class="flex items-center gap-1"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                </svg> <span id="detail-sector">Healthcare</span></span>
+                                            <span class="flex items-center gap-1"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg> Invested: <span id="detail-date">Jun-2021</span></span>
+                                            <span class="flex items-center gap-1"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                                </svg> Lead: <span id="detail-lead">Tony James</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg border border-borderSubtle text-xs font-bold text-textMain hover:bg-bgSoft transition-colors flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                            </svg>
+                                            Share
+                                        </button>
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg bg-textMain text-bgPanel text-xs font-bold hover:opacity-90 transition-colors flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                            </svg>
+                                            IC Memo
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Detail KPIs -->
+                                <div class="grid grid-cols-4 gap-4">
+                                    <div class="glass-panel p-4 rounded-xl">
+                                        <span
+                                            class="text-[10px] font-bold text-textMuted uppercase tracking-widest">Current
+                                            FMV</span>
+                                        <div class="font-mono text-2xl font-bold text-textMain mt-1" id="detail-fmv">
+                                            $210.5M
+                                        </div>
+                                        <div class="text-[10px] text-textMuted mt-1">vs <span
+                                                id="detail-cost">$125.0M</span> Cost</div>
+                                    </div>
+                                    <div class="glass-panel p-4 rounded-xl">
+                                        <span class="text-[10px] font-bold text-textMuted uppercase tracking-widest">LTM
+                                            EBITDA</span>
+                                        <div class="font-mono text-2xl font-bold text-textMain mt-1" id="detail-ebitda">
+                                            $26M
+                                        </div>
+                                        <div class="text-[10px] text-textMuted mt-1">Margin: <span
+                                                id="detail-margin">24%</span></div>
+                                    </div>
+                                    <div class="glass-panel p-4 rounded-xl">
+                                        <span
+                                            class="text-[10px] font-bold text-textMuted uppercase tracking-widest">MOIC</span>
+                                        <div class="font-mono text-2xl font-bold text-accentTeal mt-1" id="detail-moic">
+                                            1.68x</div>
+                                    </div>
+                                    <div class="glass-panel p-4 rounded-xl">
+                                        <span
+                                            class="text-[10px] font-bold text-textMuted uppercase tracking-widest">Gross
+                                            IRR</span>
+                                        <div class="font-mono text-2xl font-bold text-accentTeal mt-1" id="detail-irr">
+                                            24.2%
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Main Content Grid -->
+                                <div class="grid grid-cols-12 gap-6">
+                                    <!-- Left Column: Thesis & Description -->
+                                    <div class="col-span-12 lg:col-span-7 space-y-6">
+                                        <div class="glass-panel p-6 rounded-xl">
+                                            <h3 class="font-head font-bold text-sm text-textMain mb-4">Investment Thesis
+                                            </h3>
+                                            <p class="text-sm text-textMain leading-relaxed opacity-90 mb-6"
+                                                id="detail-thesis">
+                                                Aging population tailwinds combined with under-penetration of mental
+                                                health
+                                                services in SNFs. Operational efficiency improvements available through
+                                                tech
+                                                enablement.
+                                            </p>
+
+                                            <h3 class="font-head font-bold text-sm text-textMain mb-2">Company
+                                                Description
+                                            </h3>
+                                            <p class="text-sm text-textMuted leading-relaxed" id="detail-desc">
+                                                Leading provider of psychological and behavioral health services to the
+                                                geriatric population in skilled nursing facilities.
+                                            </p>
+                                        </div>
+
+                                        <div class="glass-panel p-6 rounded-xl">
+                                            <h3 class="font-head font-bold text-sm text-textMain mb-4">Financial
+                                                Performance
+                                                (Revenue vs EBITDA)</h3>
+                                            <div class="h-64 relative">
+                                                <canvas id="detailFinancialChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Column: Updates & Team -->
+                                    <div class="col-span-12 lg:col-span-5 space-y-6">
+                                        <div class="glass-panel p-6 rounded-xl">
+                                            <h3
+                                                class="font-head font-bold text-sm text-textMain mb-4 uppercase tracking-wider">
+                                                Recent Updates</h3>
+                                            <div class="space-y-4 relative before:absolute before:inset-y-0 before:left-1.5 before:w-px before:bg-borderSubtle"
+                                                id="detail-updates">
+                                                <!-- Populated by JS -->
+                                            </div>
+                                        </div>
+
+                                        <div class="glass-panel p-6 rounded-xl">
+                                            <h3
+                                                class="font-head font-bold text-sm text-textMain mb-4 uppercase tracking-wider">
+                                                Deal Team</h3>
+                                            <div class="space-y-3" id="detail-team">
+                                                <!-- Populated by JS -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                </main>
+
+                <!-- Lumina Chat Panel (Fixed Right Sidebar) -->
+                <div id="lumina-chat-panel"
+                    class="hidden fixed top-0 right-0 w-[450px] h-full bg-bgPanel border-l border-borderSubtle shadow-2xl flex-col z-50 animate-in slide-in-from-right-10 fade-in duration-300 overflow-hidden ring-1 ring-white/10">
+                    <!-- Header -->
+                    <div
+                        class="p-4 border-b border-borderSubtle bg-bgSoft/50 backdrop-blur-md flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-head font-bold text-sm text-textMain">Lumina AI</h3>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                                    <span class="text-[10px] text-textMuted">Online · Orchestrator</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="toggleLumina()" class="text-textMuted hover:text-textMain transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Chat Area -->
+                    <div id="chatHistory" class="flex-1 overflow-y-auto p-4 space-y-4 bg-bgBody/50">
+                        <!-- 1. Reporting -->
+                        <div class="flex gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0 flex items-center justify-center text-[10px] text-white font-bold">
+                                LA</div>
+                            <div class="space-y-1 max-w-[85%]">
+                                <div
+                                    class="bg-bgPanel border border-borderSubtle p-3 rounded-2xl rounded-tl-none shadow-sm">
+                                    <p class="text-sm text-textMain">Here is your daily briefing. I am currently
+                                        monitoring 3 active diligence streams and have updated the valuation model for
+                                        Apex Climate Services based on the latest QofE report.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. User Query -->
+                        <div class="flex gap-3 flex-row-reverse">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center text-xs text-gray-600 font-bold">
+                                ME</div>
+                            <div class="bg-accentBlue text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%]">
+                                <p class="text-sm">How does Apex compare to our Fund I average margins?</p>
+                            </div>
+                        </div>
+
+                        <!-- 3. Enterprise Data Answer -->
+                        <div class="flex gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0 flex items-center justify-center text-[10px] text-white font-bold">
+                                LA</div>
+                            <div class="space-y-1 max-w-[85%]">
+                                <div
+                                    class="bg-bgPanel border border-borderSubtle p-3 rounded-2xl rounded-tl-none shadow-sm">
+                                    <p class="text-sm text-textMain">Apex's EBITDA margin is 15.5%, which is 150bps
+                                        higher than the Fund I average of 14.0%. This suggests strong operational
+                                        efficiency relative to our portfolio.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Task Execution Request -->
+                        <div class="flex gap-3 flex-row-reverse">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center text-xs text-gray-600 font-bold">
+                                ME</div>
+                            <div class="bg-accentBlue text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%]">
+                                <p class="text-sm">Schedule a follow-up with the Apex management team.</p>
+                            </div>
+                        </div>
+
+                        <!-- 5. Task Execution Confirmation -->
+                        <div class="flex gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0 flex items-center justify-center text-[10px] text-white font-bold">
+                                LA</div>
+                            <div class="space-y-1 max-w-[85%]">
+                                <div
+                                    class="bg-bgPanel border border-borderSubtle p-3 rounded-2xl rounded-tl-none shadow-sm">
+                                    <p class="text-sm text-textMain">I have drafted an email to the Apex CEO proposing a
+                                        meeting next Tuesday at 10 AM EST and added a placeholder to your calendar.
+                                        Shall I send it?</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. Proactive Insight -->
+                        <div class="flex gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0 flex items-center justify-center text-[10px] text-white font-bold">
+                                LA</div>
+                            <div class="space-y-1 max-w-[85%]">
+                                <div
+                                    class="bg-bgPanel border border-borderSubtle p-3 rounded-2xl rounded-tl-none shadow-sm border-l-4 border-l-accentGold">
+                                    <span
+                                        class="font-bold text-accentGold mb-1 block text-[10px] uppercase tracking-wide">Proactive
+                                        Insight</span>
+                                    <p class="text-sm text-textMain">I noticed that JDC Power Systems has similar
+                                        customer concentration risks to Apex. I recommend running a comparative churn
+                                        analysis to validate our downside case.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="p-3 border-t border-borderSubtle bg-bgPanel">
+                        <div class="relative">
+                            <input type="text" id="chatInput" placeholder="Message Lumina..."
+                                class="w-full bg-bgSoft border border-borderSubtle rounded-xl pl-4 pr-10 py-3 text-sm text-textMain focus:border-accentBlue focus:ring-1 focus:ring-accentBlue outline-none transition-all shadow-inner"
+                                onkeypress="if(event.key==='Enter') sendChat()">
+                            <button onclick="sendChat()"
+                                class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 bg-accentBlue text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 19l9-2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="toggleLumina()"
+                    class="fixed right-5 bottom-5 z-40 inline-flex items-center gap-2 rounded-full border border-borderSubtle bg-bgPanel px-4 py-2 text-[11px] font-mono tracking-[0.18em] uppercase text-textMain shadow-xl">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-md animate-pulse"></span>
+                    <span>Lumina</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Main Module -->
+    <!-- Scripts (Order Matters) -->
+    <script src="data/sourcing.js"></script>
+    <script src="data/evaluation.js"></script>
+    <script src="data/portfolio.js"></script>
+    <script src="data/diligence.js"></script>
+    <script src="js/lumina.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

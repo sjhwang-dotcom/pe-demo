@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="modern">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepAuto | Agentic Data Warehouse</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@300;500;700&family=Merriweather:wght@300;400;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind (CDN for simplicity) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/design-system.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body
+    class="overflow-hidden font-sans text-base tracking-tight antialiased selection:bg-accentBlue selection:text-white">
+
+    <div class="flex h-screen w-full overflow-hidden bg-bgBody">
+        <!-- GLOBAL NAV RAIL -->
+        <aside class="w-16 bg-bgPanel border-r border-borderSubtle flex flex-col items-center py-4 z-50 shrink-0">
+            <!-- Logo -->
+            <div
+                class="w-8 h-8 rounded bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg text-white font-head font-bold text-lg mb-8">
+                D
+            </div>
+
+            <!-- Nav Items -->
+            <a href="index.html"
+                class="w-10 h-10 flex items-center justify-center rounded-lg text-textMuted hover:text-textMain hover:bg-bgSoft transition-colors mb-2"
+                title="Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </a>
+
+            <a href="agentic-data-warehouse.html"
+                class="w-10 h-10 flex items-center justify-center rounded-lg bg-bgSoft text-accentBlue transition-colors mb-2"
+                title="Data Warehouse">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                </svg>
+            </a>
+
+            <a href="knowledge-base.html"
+                class="w-10 h-10 flex items-center justify-center rounded-lg text-textMuted hover:text-textMain hover:bg-bgSoft transition-colors mb-2"
+                title="Knowledge Base">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </a>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="app-shell flex-1 min-w-0 h-full flex flex-col">
+            <div class="frame h-full flex flex-col">
+
+                <!-- Header -->
+                <header
+                    class="h-14 border-b border-borderSubtle bg-bgPanel flex items-center justify-between px-4 shrink-0 z-30">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <div>
+                                <h1 class="font-head font-bold text-lg leading-tight text-textMain tracking-tight">
+                                    DeepAuto
+                                </h1>
+                                <div class="text-xs text-textMuted uppercase tracking-widest font-medium">Agentic
+                                    Data
+                                    Warehouse</div>
+                            </div>
+                        </div>
+
+                        <!-- NAVIGATION TABS (Exact Design from index.html) -->
+                        <!-- Target Database Config Removed from Header -->
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <!-- DESIGN SELECTOR (From index.html) -->
+                        <div class="flex items-center gap-2 mr-2">
+                            <label for="designSelect"
+                                class="text-xs text-textMuted uppercase font-bold tracking-wider">Design:</label>
+                            <select id="designSelect"
+                                class="bg-bgSoft border border-borderSubtle text-textMain text-sm rounded px-2 py-1 outline-none focus:border-accentBlue">
+                                <option value="modern">Modern Fintech</option>
+                                <option value="institutional">Institutional (Wall St)</option>
+                                <option value="terminal">Terminal (Bloomberg)</option>
+                            </select>
+                        </div>
+
+                        <!-- LUMINA BUTTON (From index.html) -->
+                        <button onclick="toggleLumina()"
+                            class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-bgSoft dark:bg-blue-900/20 border border-borderSubtle dark:border-borderSubtle/50 text-accentBlue dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-800/30 text-xs font-semibold tracking-wide transition-all shadow-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Lumina
+                        </button>
+
+                        <!-- THEME TOGGLE (From index.html) -->
+                        <button id="themeToggleBtn"
+                            class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-bgSoft text-textMuted hover:text-textMain transition-colors">
+                            <svg id="themeIconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                            <svg id="themeIconMoon" class="w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9 0 0012 21a9.003 9 0 008.354-5.646z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Main Content Area (Sidebar + Dashboard) -->
+                <div class="flex-1 flex overflow-hidden">
+
+                    <!-- SOURCES & TARGETS SIDEBAR -->
+                    <aside class="w-64 border-r border-borderSubtle bg-bgPanel/50 flex flex-col z-20">
+                        <!-- SOURCES SECTION -->
+                        <div class="flex-1 flex flex-col min-h-0 border-b border-borderSubtle">
+                            <div class="p-4 border-b border-borderSubtle bg-bgPanel/30">
+                                <h3 class="font-head font-bold text-sm text-textMain uppercase tracking-wider mb-2">
+                                    Sources</h3>
+                                <div class="relative">
+                                    <input type="text" placeholder="Search sources..."
+                                        class="w-full bg-bgSoft border border-borderSubtle rounded-full pl-8 pr-3 py-1.5 text-xs text-textMain focus:border-accentBlue outline-none transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 text-textMuted absolute left-2.5 top-1/2 transform -translate-y-1/2"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-3 space-y-4">
+                                <!-- Group: Cloud Storage -->
+                                <div>
+                                    <div class="text-xs font-bold text-textMuted uppercase tracking-wider mb-2 px-1">
+                                        Cloud Storage</div>
+                                    <div class="space-y-1">
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-sm">
+                                                📂</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">Google Drive</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Connected
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-sm">
+                                                📦</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">Dropbox</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Connected
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Group: File Uploads -->
+                                <div>
+                                    <div
+                                        class="text-xs font-bold text-textMuted uppercase tracking-wider mb-2 px-1 mt-2">
+                                        File Uploads</div>
+                                    <div class="space-y-1">
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+                                                📁</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">/uploads/deal_flow</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Active
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+                                                📁</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">/uploads/portfolio_co</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Active
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Group: Market Intelligence -->
+                                <div>
+                                    <div
+                                        class="text-xs font-bold text-textMuted uppercase tracking-wider mb-2 px-1 mt-2">
+                                        Market Intelligence</div>
+                                    <div class="space-y-1">
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center text-sm">
+                                                📈</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">Bloomberg</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> API
+                                                    Active</div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+                                                📊</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">PitchBook</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> Not
+                                                    Connected</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Group: ERP -->
+                                <div>
+                                    <div class="text-xs font-bold text-textMuted uppercase tracking-wider mb-2 px-1">ERP
+                                        / Finance</div>
+                                    <div class="space-y-1">
+                                        <div
+                                            class="p-2 rounded-lg border border-borderSubtle bg-bgSoft hover:border-accentBlue cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+                                                💰</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">SAP S/4HANA</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Connected
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+                                                �</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">Oracle EBS</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> Not
+                                                    Connected</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Group: CRM -->
+                                <div>
+                                    <div
+                                        class="text-xs font-bold text-textMuted uppercase tracking-wider mb-2 px-1 mt-2">
+                                        CRM</div>
+                                    <div class="space-y-1">
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+                                                🤝</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">Salesforce</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Connected
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+                                                📊</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">HubSpot</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-orange-400"></span> Partial
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TARGETS SECTION -->
+                        <div class="flex-1 flex flex-col min-h-0 bg-bgPanel/30">
+                            <div class="p-4 border-b border-borderSubtle">
+                                <h3 class="font-head font-bold text-sm text-textMain uppercase tracking-wider mb-2">
+                                    Targets</h3>
+                                <div class="relative">
+                                    <input type="text" placeholder="Search targets..."
+                                        class="w-full bg-bgSoft border border-borderSubtle rounded-full pl-8 pr-3 py-1.5 text-xs text-textMain focus:border-accentBlue outline-none transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 text-textMuted absolute left-2.5 top-1/2 transform -translate-y-1/2"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-3 space-y-4">
+                                <!-- Group: Data Warehouses -->
+                                <div>
+                                    <div class="text-xs font-bold text-textMuted uppercase tracking-wider mb-2 px-1">
+                                        Data Warehouse</div>
+                                    <div class="space-y-1">
+                                        <div
+                                            class="p-2 rounded-lg border border-borderSubtle bg-bgSoft hover:border-accentPurple cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-accentPurple/10 flex items-center justify-center text-sm text-accentPurple">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">Clickhouse</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Active
+                                                    Target</div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center text-sm text-blue-500">
+                                                ❄️</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">Snowflake</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> Configured
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-blue-800/10 flex items-center justify-center text-sm text-blue-800">
+                                                🐘</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">PostgreSQL</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Active
+                                                    Target</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Group: Object Storage -->
+                                <div>
+                                    <div
+                                        class="text-xs font-bold text-textMuted uppercase tracking-wider mb-2 px-1 mt-2">
+                                        Object Storage</div>
+                                    <div class="space-y-1">
+                                        <div
+                                            class="p-2 rounded-lg border border-transparent hover:bg-bgSoft cursor-pointer transition-colors flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center text-sm text-green-500">
+                                                📦</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-textMain">AWS S3</div>
+                                                <div class="text-[9px] text-textMuted flex items-center gap-1"><span
+                                                        class="w-1.5 h-1.5 rounded-full bg-accentTeal"></span> Archive
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- DASHBOARD CONTENT -->
+                    <main class="flex-1 overflow-y-auto p-4">
+                        <div class="w-full space-y-2">
+
+                            <!-- Hero Section -->
+                            <section class="flex flex-col gap-2 items-start text-left w-full">
+                                <div>
+                                    <h2 class="font-head text-2xl font-bold text-textMain mb-1">Data Pipeline Control
+                                        Center
+                                    </h2>
+                                    <p class="text-base text-textMuted leading-relaxed mb-2">
+                                        Monitor enterprise data flow from source to storage with real-time agent
+                                        orchestration.
+                                    </p>
+                                </div>
+                            </section>
+
+
+
+                            <div class="flex gap-4 items-stretch">
+                                <!-- LEFT: Sources (Sidebar) Removed -->
+
+                                <!-- Main Content Area -->
+                                <div class="flex flex-col flex-grow gap-2">
+                                    <!-- CENTER: Pipeline Status -->
+                                    <div class="glass-panel rounded-xl p-3 flex flex-col">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <h3 class="font-head font-bold text-base text-textMain">Pipeline
+                                                    Status</h3>
+                                                <p class="text-sm text-textMuted">Salesforce + SAP (Customer 360)
+                                                </p>
+                                            </div>
+                                            <span
+                                                class="text-xs font-mono text-textMuted bg-bgSoft px-2 py-1 rounded">ID:
+                                                pipe_8291</span>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 relative mb-2">
+                                            <!-- Connecting Line -->
+                                            <div
+                                                class="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-borderSubtle to-transparent -z-10 transform -translate-y-1/2 hidden md:block">
+                                            </div>
+
+                                            <!-- Ingestion Agent -->
+                                            <div class="flex flex-col gap-4">
+                                                <div id="card-ingestion"
+                                                    class="pipeline-card group cursor-pointer relative bg-bgPanel border border-borderSubtle rounded-xl p-3 hover:border-accentTeal hover:shadow-lg hover:shadow-accentTeal/10 transition-all duration-300"
+                                                    onclick="toggleAgentDetail('ingestion')">
+                                                    <div
+                                                        class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-bgPanel border border-borderSubtle px-3 py-0.5 rounded-full text-[10px] font-bold text-textMuted uppercase tracking-widest z-10">
+                                                        Step 1</div>
+                                                    <div class="flex items-center gap-4 mb-3">
+                                                        <div
+                                                            class="w-12 h-12 rounded-lg bg-accentTeal/10 flex items-center justify-center text-accentTeal group-hover:scale-110 transition-transform duration-300">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                        </div>
+                                                        <div>
+                                                            <h4
+                                                                class="font-bold text-base text-textMain group-hover:text-accentTeal transition-colors">
+                                                                Ingestion Agent</h4>
+                                                            <p class="text-xs text-textMuted">Data Capture &
+                                                                Normalization</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="space-y-2 mb-3">
+                                                        <div class="flex justify-between text-xs">
+                                                            <span class="text-textMuted">Status</span>
+                                                            <span class="font-bold text-emerald-500">Active</span>
+                                                        </div>
+                                                        <div class="flex justify-between text-xs">
+                                                            <span class="text-textMuted">Sources</span>
+                                                            <span class="font-mono text-textMain">12
+                                                                Connected</span>
+                                                        </div>
+                                                        <div
+                                                            class="w-full bg-bgSoft h-1.5 rounded-full overflow-hidden">
+                                                            <div class="bg-accentTeal h-full w-3/4 animate-pulse">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Latest Message -->
+                                                    <div class="bg-bgSoft rounded-lg p-2 flex items-center gap-2">
+                                                        <div
+                                                            class="w-1.5 h-1.5 rounded-full bg-accentTeal animate-pulse">
+                                                        </div>
+                                                        <p id="msg-ingestion"
+                                                            class="text-[10px] text-textMain font-medium truncate">
+                                                            Initializing...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Refinery Agent -->
+                                            <div class="flex flex-col gap-4">
+                                                <div id="card-refinery"
+                                                    class="pipeline-card group cursor-pointer relative bg-bgPanel border border-borderSubtle rounded-xl p-3 hover:border-accentBlue hover:shadow-lg hover:shadow-accentBlue/10 transition-all duration-300"
+                                                    onclick="toggleAgentDetail('refinery')">
+                                                    <div
+                                                        class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-bgPanel border border-borderSubtle px-3 py-0.5 rounded-full text-[10px] font-bold text-textMuted uppercase tracking-widest z-10">
+                                                        Step 2</div>
+                                                    <div class="flex items-center gap-4 mb-3">
+                                                        <div
+                                                            class="w-12 h-12 rounded-lg bg-accentBlue/10 flex items-center justify-center text-accentBlue group-hover:scale-110 transition-transform duration-300">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                                            </svg>
+                                                        </div>
+                                                        <div>
+                                                            <h4
+                                                                class="font-bold text-base text-textMain group-hover:text-accentBlue transition-colors">
+                                                                Refinery Agent</h4>
+                                                            <p class="text-xs text-textMuted">Cleaning &
+                                                                Standardization</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="space-y-2 mb-3">
+                                                        <div class="flex justify-between text-xs">
+                                                            <span class="text-textMuted">Quality Score</span>
+                                                            <span class="font-bold text-accentBlue">98.5%</span>
+                                                        </div>
+                                                        <div class="flex justify-between text-xs">
+                                                            <span class="text-textMuted">Processing</span>
+                                                            <span class="font-mono text-textMain">450
+                                                                rows/sec</span>
+                                                        </div>
+                                                        <div
+                                                            class="w-full bg-bgSoft h-1.5 rounded-full overflow-hidden">
+                                                            <div class="bg-accentBlue h-full w-1/2 animate-pulse">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Latest Message -->
+                                                    <div class="bg-bgSoft rounded-lg p-2 flex items-center gap-2">
+                                                        <div
+                                                            class="w-1.5 h-1.5 rounded-full bg-accentBlue animate-pulse">
+                                                        </div>
+                                                        <p id="msg-refinery"
+                                                            class="text-[10px] text-textMain font-medium truncate">
+                                                            Waiting for data...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- DB Agent -->
+                                            <div class="flex flex-col gap-4">
+                                                <div id="card-db"
+                                                    class="pipeline-card group cursor-pointer relative bg-bgPanel border border-borderSubtle rounded-xl p-3 hover:border-accentPurple hover:shadow-lg hover:shadow-accentPurple/10 transition-all duration-300"
+                                                    onclick="toggleAgentDetail('db')">
+                                                    <div
+                                                        class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-bgPanel border border-borderSubtle px-3 py-0.5 rounded-full text-[10px] font-bold text-textMuted uppercase tracking-widest z-10">
+                                                        Step 3</div>
+                                                    <div class="flex items-center gap-4 mb-3">
+                                                        <div
+                                                            class="w-12 h-12 rounded-lg bg-accentPurple/10 flex items-center justify-center text-accentPurple group-hover:scale-110 transition-transform duration-300">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                                                            </svg>
+                                                        </div>
+                                                        <div>
+                                                            <h4
+                                                                class="font-bold text-base text-textMain group-hover:text-accentPurple transition-colors">
+                                                                DB Agent</h4>
+                                                            <p class="text-xs text-textMuted">Target: Clickhouse</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="space-y-2 mb-3">
+                                                        <div class="flex justify-between text-xs">
+                                                            <span class="text-textMuted">Write Latency</span>
+                                                            <span class="font-bold text-accentPurple">12ms</span>
+                                                        </div>
+                                                        <div class="flex justify-between text-xs">
+                                                            <span class="text-textMuted">Total Records</span>
+                                                            <span class="font-mono text-textMain">14.2M</span>
+                                                        </div>
+                                                        <div
+                                                            class="w-full bg-bgSoft h-1.5 rounded-full overflow-hidden">
+                                                            <div class="bg-accentPurple h-full w-full animate-pulse">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Latest Message -->
+                                                    <div class="bg-bgSoft rounded-lg p-2 flex items-center gap-2">
+                                                        <div
+                                                            class="w-1.5 h-1.5 rounded-full bg-accentPurple animate-pulse">
+                                                        </div>
+                                                        <p id="msg-db"
+                                                            class="text-[10px] text-textMain font-medium truncate">Idle
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Agent Details Container (Hidden by default) -->
+                                        <div id="agent-details-container" class="hidden mb-2">
+
+                                            <!-- Ingestion Details -->
+                                            <div id="detail-ingestion"
+                                                class="hidden glass-panel rounded-xl p-4 animate-in fade-in slide-in-from-top-4 duration-500 border border-accentTeal/30">
+                                                <div
+                                                    class="flex justify-between items-center mb-3 pb-2 border-b border-borderSubtle">
+                                                    <h4
+                                                        class="font-bold text-sm text-accentTeal uppercase tracking-wider">
+                                                        Ingestion Agent Status</h4>
+                                                    <button onclick="toggleAgentDetail('ingestion')"
+                                                        class="text-textMuted hover:text-textMain"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg></button>
+                                                </div>
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Active Sources
+                                                        </h5>
+                                                        <ul class="space-y-1">
+                                                            <li class="flex items-center gap-2 text-xs text-textMuted">
+                                                                <span
+                                                                    class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                                                Salesforce (Syncing)
+                                                            </li>
+                                                            <li class="flex items-center gap-2 text-xs text-textMuted">
+                                                                <span
+                                                                    class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                                                HubSpot (Syncing)
+                                                            </li>
+                                                            <li class="flex items-center gap-2 text-xs text-textMuted">
+                                                                <span
+                                                                    class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
+                                                                Google Drive (Scanning)
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Throughput</h5>
+                                                        <div class="flex items-end gap-1 h-12">
+                                                            <div class="w-1/5 bg-accentTeal/20 h-full rounded-t"></div>
+                                                            <div class="w-1/5 bg-accentTeal/40 h-3/4 rounded-t"></div>
+                                                            <div class="w-1/5 bg-accentTeal/60 h-1/2 rounded-t"></div>
+                                                            <div class="w-1/5 bg-accentTeal/80 h-4/5 rounded-t"></div>
+                                                            <div
+                                                                class="w-1/5 bg-accentTeal h-full rounded-t animate-pulse">
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-right text-[10px] text-textMuted mt-1">45 MB/s
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Refinery Details -->
+                                            <div id="detail-refinery"
+                                                class="hidden glass-panel rounded-xl p-4 animate-in fade-in slide-in-from-top-4 duration-500 border border-accentBlue/30">
+                                                <div
+                                                    class="flex justify-between items-center mb-3 pb-2 border-b border-borderSubtle">
+                                                    <h4
+                                                        class="font-bold text-sm text-accentBlue uppercase tracking-wider">
+                                                        Refinery Agent Status</h4>
+                                                    <button onclick="toggleAgentDetail('refinery')"
+                                                        class="text-textMuted hover:text-textMain"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg></button>
+                                                </div>
+                                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                    <div
+                                                        class="p-2 bg-bgSoft/50 rounded border border-borderSubtle text-center">
+                                                        <div class="text-[10px] text-textMuted uppercase">Data Quality
+                                                        </div>
+                                                        <div class="text-xl font-bold text-accentBlue">98.5%</div>
+                                                    </div>
+                                                    <div
+                                                        class="p-2 bg-bgSoft/50 rounded border border-borderSubtle text-center">
+                                                        <div class="text-[10px] text-textMuted uppercase">Rows Cleaned
+                                                        </div>
+                                                        <div class="text-xl font-bold text-textMain">1.2M</div>
+                                                    </div>
+                                                    <div
+                                                        class="p-2 bg-bgSoft/50 rounded border border-borderSubtle text-center">
+                                                        <div class="text-[10px] text-textMuted uppercase">Errors</div>
+                                                        <div class="text-xl font-bold text-red-400">0.02%</div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <h5 class="text-xs font-bold text-textMain mb-2">Recent
+                                                        Transformations</h5>
+                                                    <div
+                                                        class="text-[10px] text-textMuted font-mono bg-bgBody/50 p-2 rounded border border-borderSubtle">
+                                                        <div>> Normalized phone numbers (E.164)</div>
+                                                        <div>> Enriched company data via Clearbit</div>
+                                                        <div>> Deduplicated 150 records</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- DB Details -->
+                                            <div id="detail-db"
+                                                class="hidden glass-panel rounded-xl p-4 animate-in fade-in slide-in-from-top-4 duration-500 border border-accentPurple/30">
+                                                <div
+                                                    class="flex justify-between items-center mb-3 pb-2 border-b border-borderSubtle">
+                                                    <h4
+                                                        class="font-bold text-sm text-accentPurple uppercase tracking-wider">
+                                                        DB Agent Status</h4>
+                                                    <button onclick="toggleAgentDetail('db')"
+                                                        class="text-textMuted hover:text-textMain"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg></button>
+                                                </div>
+                                                <div class="flex gap-4">
+                                                    <div class="flex-1">
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Storage Health
+                                                        </h5>
+                                                        <div
+                                                            class="w-full bg-bgSoft h-2 rounded-full overflow-hidden mb-1">
+                                                            <div class="bg-accentPurple h-full w-[65%]"></div>
+                                                        </div>
+                                                        <div class="flex justify-between text-[10px] text-textMuted">
+                                                            <span>Used: 650GB</span>
+                                                            <span>Total: 1TB</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-1 border-l border-borderSubtle pl-4">
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Write
+                                                            Performance</h5>
+                                                        <div class="flex justify-between items-center mb-1">
+                                                            <span class="text-[10px] text-textMuted">Latency</span>
+                                                            <span class="text-xs font-bold text-green-400">12ms</span>
+                                                        </div>
+                                                        <div class="flex justify-between items-center">
+                                                            <span class="text-[10px] text-textMuted">IOPS</span>
+                                                            <span class="text-xs font-bold text-textMain">4,500</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Upload & Connect Section -->
+                                    <div
+                                        class="glass-panel rounded-xl p-3 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                                        <div class="mb-2">
+                                            <h3 class="font-head font-bold text-lg text-textMain mb-1">Upload & Connect
+                                            </h3>
+                                        </div>
+
+                                        <!-- File Upload Area -->
+                                        <div
+                                            class="border-2 border-dashed border-accentBlue/30 bg-accentBlue/5 rounded-xl p-4 flex flex-col items-center justify-center text-center mb-3 hover:bg-accentBlue/10 transition-colors cursor-pointer group">
+                                            <div
+                                                class="w-12 h-12 rounded-full bg-accentBlue/10 flex items-center justify-center text-accentBlue mb-4 group-hover:scale-110 transition-transform">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                </svg>
+                                            </div>
+                                            <h4 class="font-bold text-textMain mb-1">Drop files here (spreadsheets,
+                                                exports, reports)</h4>
+                                            <p class="text-xs text-textMuted mb-4 max-w-md">Drag and drop CSV,
+                                                Excel, PDF, or PowerPoint. The Ingestion Agent will detect the type
+                                                and create an ingestion job automatically.</p>
+                                            <div class="flex gap-3">
+                                                <button
+                                                    class="px-4 py-2 rounded-lg bg-accentBlue text-white text-sm font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">Select
+                                                    files</button>
+                                                <button
+                                                    class="px-4 py-2 rounded-lg bg-bgPanel border border-borderSubtle text-textMain text-sm font-medium hover:bg-bgSoft transition-colors">View
+                                                    recent uploads</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Connectors Grid -->
+                                        <div>
+                                            <h4 class="font-bold text-sm text-textMain mb-2">Connect drives &
+                                                enterprise apps</h4>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <!-- Google Drive -->
+                                                <button
+                                                    class="flex items-center gap-3 p-3 rounded-xl border border-borderSubtle bg-bgPanel hover:border-accentBlue hover:shadow-md transition-all text-left group">
+                                                    <div
+                                                        class="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm text-lg">
+                                                        📂</div>
+                                                    <div>
+                                                        <div
+                                                            class="text-xs font-bold text-textMain group-hover:text-accentBlue transition-colors">
+                                                            Google Drive</div>
+                                                        <div class="text-[10px] text-textMuted">1-click OAuth</div>
+                                                    </div>
+                                                </button>
+
+                                                <!-- Dropbox -->
+                                                <button
+                                                    class="flex items-center gap-3 p-3 rounded-xl border border-borderSubtle bg-bgPanel hover:border-accentBlue hover:shadow-md transition-all text-left group">
+                                                    <div
+                                                        class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center shadow-sm text-white text-lg">
+                                                        📦</div>
+                                                    <div>
+                                                        <div
+                                                            class="text-xs font-bold text-textMain group-hover:text-accentBlue transition-colors">
+                                                            Dropbox</div>
+                                                        <div class="text-[10px] text-textMuted">1-click OAuth</div>
+                                                    </div>
+                                                </button>
+
+                                                <!-- OneDrive -->
+                                                <button
+                                                    class="flex items-center gap-3 p-3 rounded-xl border border-borderSubtle bg-bgPanel hover:border-accentBlue hover:shadow-md transition-all text-left group">
+                                                    <div
+                                                        class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm text-white text-lg">
+                                                        ☁️</div>
+                                                    <div>
+                                                        <div
+                                                            class="text-xs font-bold text-textMain group-hover:text-accentBlue transition-colors">
+                                                            OneDrive</div>
+                                                        <div class="text-[10px] text-textMuted">1-click OAuth</div>
+                                                    </div>
+                                                </button>
+
+                                                <!-- SharePoint -->
+                                                <button
+                                                    class="flex items-center gap-3 p-3 rounded-xl border border-borderSubtle bg-bgPanel hover:border-accentBlue hover:shadow-md transition-all text-left group">
+                                                    <div
+                                                        class="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center shadow-sm text-white text-lg">
+                                                        S</div>
+                                                    <div>
+                                                        <div
+                                                            class="text-xs font-bold text-textMain group-hover:text-accentBlue transition-colors">
+                                                            SharePoint</div>
+                                                        <div class="text-[10px] text-textMuted">IT approval</div>
+                                                    </div>
+                                                </button>
+
+                                                <!-- Salesforce -->
+                                                <button
+                                                    class="flex items-center gap-3 p-3 rounded-xl border border-borderSubtle bg-bgPanel hover:border-accentBlue hover:shadow-md transition-all text-left group">
+                                                    <div
+                                                        class="w-8 h-8 rounded-lg bg-blue-400 flex items-center justify-center shadow-sm text-white text-lg">
+                                                        ☁️</div>
+                                                    <div>
+                                                        <div
+                                                            class="text-xs font-bold text-textMain group-hover:text-accentBlue transition-colors">
+                                                            Salesforce</div>
+                                                        <div class="text-[10px] text-textMuted">CRM connect</div>
+                                                    </div>
+                                                </button>
+
+                                                <!-- HubSpot -->
+                                                <button
+                                                    class="flex items-center gap-3 p-3 rounded-xl border border-borderSubtle bg-bgPanel hover:border-accentBlue hover:shadow-md transition-all text-left group">
+                                                    <div
+                                                        class="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center shadow-sm text-white text-lg">
+                                                        H</div>
+                                                    <div>
+                                                        <div
+                                                            class="text-xs font-bold text-textMain group-hover:text-accentBlue transition-colors">
+                                                            HubSpot</div>
+                                                        <div class="text-[10px] text-textMuted">CRM connect</div>
+                                                    </div>
+                                                </button>
+
+                                                <!-- Workday -->
+                                                <button
+                                                    class="flex items-center gap-3 p-3 rounded-xl border border-borderSubtle bg-bgPanel hover:border-accentBlue hover:shadow-md transition-all text-left group">
+                                                    <div
+                                                        class="w-8 h-8 rounded-lg bg-blue-700 flex items-center justify-center shadow-sm text-white text-lg">
+                                                        W</div>
+                                                    <div>
+                                                        <div
+                                                            class="text-xs font-bold text-textMain group-hover:text-accentBlue transition-colors">
+                                                            Workday</div>
+                                                        <div class="text-[10px] text-textMuted">HRIS connect</div>
+                                                    </div>
+                                                </button>
+
+                                                <!-- Custom API -->
+                                                <button
+                                                    class="flex items-center gap-3 p-3 rounded-xl border border-borderSubtle bg-bgPanel hover:border-accentBlue hover:shadow-md transition-all text-left group">
+                                                    <div
+                                                        class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center shadow-sm text-white text-lg">
+                                                        🔌</div>
+                                                    <div>
+                                                        <div
+                                                            class="text-xs font-bold text-textMain group-hover:text-accentBlue transition-colors">
+                                                            Custom API</div>
+                                                        <div class="text-[10px] text-textMuted">Base URL · Key</div>
+                                                    </div>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            <!-- Scripts -->
+            <script>
+                function toggleAgentDetail(agentType) {
+                    const container = document.getElementById('agent-details-container');
+                    const details = {
+                        'ingestion': 'detail-ingestion',
+                        'refinery': 'detail-refinery',
+                        'db': 'detail-db'
+                    };
+                    const cards = {
+                        'ingestion': 'card-ingestion',
+                        'refinery': 'card-refinery',
+                        'db': 'card-db'
+                    };
+
+                    const targetDetailId = details[agentType];
+                    const targetDetail = document.getElementById(targetDetailId);
+
+                    // Check if currently open
+                    const isCurrentlyOpen = !targetDetail.classList.contains('hidden');
+
+                    // Reset all
+                    Object.values(details).forEach(id => document.getElementById(id).classList.add('hidden'));
+                    Object.values(cards).forEach(id => {
+                        const card = document.getElementById(id);
+                        card.classList.remove('ring-2', 'ring-offset-2', 'ring-accentTeal', 'ring-accentBlue', 'ring-accentPurple');
+                    });
+                    container.classList.add('hidden');
+
+                    // If it wasn't open, open it now
+                    if (!isCurrentlyOpen) {
+                        container.classList.remove('hidden');
+                        targetDetail.classList.remove('hidden');
+
+                        // Add active ring
+                        const card = document.getElementById(cards[agentType]);
+                        if (agentType === 'ingestion') card.classList.add('ring-2', 'ring-offset-2', 'ring-accentTeal');
+                        if (agentType === 'refinery') card.classList.add('ring-2', 'ring-offset-2', 'ring-accentBlue');
+                        if (agentType === 'db') card.classList.add('ring-2', 'ring-offset-2', 'ring-accentPurple');
+                    }
+                }
+
+                // --- REAL-TIME AGENT SIMULATION ---
+                const agents = {
+                    ingestion: {
+                        id: 'ingestion',
+                        msgId: 'msg-ingestion',
+                        logId: 'log-ingestion',
+                        messages: [
+                            "Connecting to Salesforce API...",
+                            "Fetching new leads (Batch #102)...",
+                            "Validating schema compatibility...",
+                            "Detected 5 new columns...",
+                            "Normalizing date formats...",
+                            "Buffer flush complete."
+                        ]
+                    },
+                    refinery: {
+                        id: 'refinery',
+                        msgId: 'msg-refinery',
+                        logId: 'log-refinery',
+                        messages: [
+                            "Deduplicating records...",
+                            "Enriching with Clearbit data...",
+                            "Standardizing currency fields...",
+                            "Dropping invalid rows (2%)...",
+                            "Quality check passed (98.5%)...",
+                            "Optimizing JSON structure..."
+                        ]
+                    },
+                    db: {
+                        id: 'db',
+                        msgId: 'msg-db',
+                        logId: 'log-db',
+                        messages: [
+                            "Writing to Clickhouse shard 1...",
+                            "Updating materialized views...",
+                            "Indexing new records...",
+                            "Compacting data partitions...",
+                            "Syncing with S3 archive...",
+                            "Commit successful (12ms)."
+                        ]
+                    }
+                };
+
+                function addLog(agentKey, message) {
+                    const agent = agents[agentKey];
+                    const logContainer = document.getElementById(agent.logId);
+                    const msgContainer = document.getElementById(agent.msgId);
+
+                    if (!logContainer || !msgContainer) return;
+
+                    // Update Card Message
+                    msgContainer.textContent = message;
+                    msgContainer.classList.remove('truncate'); // Briefly show full
+                    setTimeout(() => msgContainer.classList.add('truncate'), 2000);
+
+                    // Add to Log
+                    const logItem = document.createElement('div');
+                    logItem.className = "text-[10px] text-textMuted flex gap-2 animate-in fade-in slide-in-from-left-2 duration-300";
+
+                    const time = new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    logItem.innerHTML = `<span class="font-mono text-textSubtle opacity-50">${time}</span> <span>${message}</span>`;
+
+                    logContainer.prepend(logItem);
+
+                    // Keep log short
+                    if (logContainer.children.length > 20) {
+                        logContainer.lastElementChild.remove();
+                    }
+                }
+
+                function simulateActivity() {
+                    Object.keys(agents).forEach(key => {
+                        if (Math.random() > 0.6) { // Random chance to update
+                            const agent = agents[key];
+                            const randomMsg = agent.messages[Math.floor(Math.random() * agent.messages.length)];
+                            addLog(key, randomMsg);
+                        }
+                    });
+                }
+
+                // Start simulation
+                setInterval(simulateActivity, 2000);
+
+                // Initial population
+                setTimeout(() => addLog('ingestion', "System initialized."), 500);
+                setTimeout(() => addLog('refinery', "Waiting for input stream..."), 1000);
+                setTimeout(() => addLog('db', "Connection pool ready."), 1500);
+            </script>
+            <script>
+                // --- THEME & DESIGN MANAGEMENT ---
+
+                function initTheme() {
+                    // Load saved preferences
+                    const savedTheme = localStorage.getItem('theme') || 'light';
+                    const savedDesign = localStorage.getItem('design') || 'modern';
+
+                    setTheme(savedTheme);
+                    setDesign(savedDesign);
+
+                    // Event Listeners
+                    document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
+                    document.getElementById('designSelect').addEventListener('change', (e) => setDesign(e.target.value));
+                }
+
+                function setTheme(mode) {
+                    const iconSun = document.getElementById('themeIconSun');
+                    const iconMoon = document.getElementById('themeIconMoon');
+
+                    if (mode === 'dark') {
+                        document.body.classList.add('dark');
+                        document.documentElement.classList.add('dark'); // Tailwind often checks html class
+                        if (iconSun) iconSun.classList.remove('hidden');
+                        if (iconMoon) iconMoon.classList.add('hidden');
+                    } else {
+                        document.body.classList.remove('dark');
+                        document.documentElement.classList.remove('dark');
+                        if (iconSun) iconSun.classList.add('hidden');
+                        if (iconMoon) iconMoon.classList.remove('hidden');
+                    }
+                    localStorage.setItem('theme', mode);
+                }
+
+                function toggleTheme() {
+                    const isDark = document.body.classList.contains('dark');
+                    setTheme(isDark ? 'light' : 'dark');
+                }
+
+                function setDesign(design) {
+                    document.documentElement.setAttribute('data-theme', design);
+                    localStorage.setItem('design', design);
+
+                    const select = document.getElementById('designSelect');
+                    if (select) select.value = design;
+                }
+
+                // Lumina Toggle Logic
+                function toggleLumina() {
+                    const chatPanel = document.getElementById('lumina-chat-panel');
+                    if (chatPanel.classList.contains('hidden')) {
+                        chatPanel.classList.remove('hidden');
+                        chatPanel.classList.add('flex');
+                    } else {
+                        chatPanel.classList.add('hidden');
+                        chatPanel.classList.remove('flex');
+                    }
+                }
+
+                // Initialize on load
+                document.addEventListener('DOMContentLoaded', initTheme);
+            </script>
+
+            <!-- Lumina Chat Panel (Fixed Right Sidebar) -->
+            <div id="lumina-chat-panel"
+                class="hidden fixed top-0 right-0 w-[450px] h-full bg-bgPanel border-l border-borderSubtle shadow-2xl flex-col z-50 animate-in slide-in-from-right-10 fade-in duration-300 overflow-hidden ring-1 ring-white/10">
+                <!-- Header -->
+                <div
+                    class="p-4 border-b border-borderSubtle bg-bgSoft/50 backdrop-blur-md flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-head font-bold text-sm text-textMain">Lumina AI</h3>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                                <span class="text-[10px] text-textMuted">Online · Orchestrator</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="toggleLumina()" class="text-textMuted hover:text-textMain transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Chat Area -->
+                <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-bgBody/50">
+                    <!-- Intro Message -->
+                    <div class="flex gap-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0 flex items-center justify-center text-[10px] text-white font-bold">
+                            LA</div>
+                        <div class="space-y-1 max-w-[85%]">
+                            <div
+                                class="bg-bgPanel border border-borderSubtle p-3 rounded-2xl rounded-tl-none shadow-sm">
+                                <p class="text-sm text-textMain">Hello! I'm Lumina. I orchestrate your data pipeline
+                                    agents. How can I help you today?</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="text-[10px] bg-bgSoft hover:bg-accentBlue/10 hover:text-accentBlue border border-borderSubtle px-2 py-1 rounded-full transition-colors">Check
+                                    Status</button>
+                                <button
+                                    class="text-[10px] bg-bgSoft hover:bg-accentBlue/10 hover:text-accentBlue border border-borderSubtle px-2 py-1 rounded-full transition-colors">Query
+                                    Data</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Query 1 -->
+                    <div class="flex gap-3 flex-row-reverse">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center text-xs text-gray-600 font-bold">
+                            ME</div>
+                        <div class="bg-accentBlue text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%]">
+                            <p class="text-sm">Check the status of the Ingestion Agent. Is the Salesforce sync running?
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Lumina Response 1 -->
+                    <div class="flex gap-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0 flex items-center justify-center text-[10px] text-white font-bold">
+                            LA</div>
+                        <div class="space-y-2 max-w-[85%]">
+                            <div
+                                class="bg-bgPanel border border-borderSubtle p-3 rounded-2xl rounded-tl-none shadow-sm">
+                                <p class="text-sm text-textMain mb-2">Checking <span
+                                        class="text-accentTeal font-bold">@IngestionAgent</span> status...</p>
+                                <div
+                                    class="bg-bgSoft/50 rounded p-2 border border-borderSubtle text-xs font-mono text-textMuted mb-2">
+                                    > Status: ACTIVE<br>
+                                    > Job: Salesforce Sync (Hourly)<br>
+                                    > Progress: 85% (Batch 4/5)
+                                </div>
+                                <p class="text-sm text-textMain">Yes, the Salesforce sync is currently running and is
+                                    85% complete. No errors detected.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Query 2 -->
+                    <div class="flex gap-3 flex-row-reverse">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center text-xs text-gray-600 font-bold">
+                            ME</div>
+                        <div class="bg-accentBlue text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%]">
+                            <p class="text-sm">Great. Can I get a summary of the latest 'Closed Won' opportunities from
+                                that data?</p>
+                        </div>
+                    </div>
+
+                    <!-- Lumina Response 2 -->
+                    <div class="flex gap-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0 flex items-center justify-center text-[10px] text-white font-bold">
+                            LA</div>
+                        <div class="space-y-2 max-w-[85%]">
+                            <div
+                                class="bg-bgPanel border border-borderSubtle p-3 rounded-2xl rounded-tl-none shadow-sm">
+                                <p class="text-sm text-textMain mb-2">I'll ask <span
+                                        class="text-accentPurple font-bold">@DBAgent</span> to query the prepared
+                                    `sales_opportunities` view.</p>
+                                <div
+                                    class="bg-bgSoft/50 rounded p-2 border border-borderSubtle text-xs font-mono text-textMuted mb-2">
+                                    SELECT name, amount, close_date <br>
+                                    FROM analytics.opportunities <br>
+                                    WHERE stage = 'Closed Won' <br>
+                                    ORDER BY close_date DESC LIMIT 3;
+                                </div>
+                                <p class="text-sm text-textMain mb-2">Here are the latest 3 deals:</p>
+                                <ul class="text-xs text-textMain space-y-1 list-disc pl-4 mb-2">
+                                    <li><strong>Acme Corp</strong>: $120,000 (Today)</li>
+                                    <li><strong>Globex Inc</strong>: $85,500 (Yesterday)</li>
+                                    <li><strong>Soylent Corp</strong>: $210,000 (2 days ago)</li>
+                                </ul>
+                                <p class="text-sm text-textMain">Would you like to generate a full report?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="p-3 border-t border-borderSubtle bg-bgPanel">
+                    <div class="relative">
+                        <input type="text" placeholder="Message Lumina..."
+                            class="w-full bg-bgSoft border border-borderSubtle rounded-xl pl-4 pr-10 py-3 text-sm text-textMain focus:border-accentBlue focus:ring-1 focus:ring-accentBlue outline-none transition-all shadow-inner">
+                        <button
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 bg-accentBlue text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 19l9-2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+</body>
+
+</html>

@@ -1,0 +1,326 @@
+/* DeepAuto PE Console - Styles */
+
+:root {
+  /* --- Default (Modern Fintech) --- */
+  --bg-body: #f8fafc;
+  --bg-panel: #ffffff;
+  --bg-soft: #f1f5f9;
+  --border-subtle: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-head: 'Space Grotesk', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --accent-blue: #3b82f6;
+  --accent-teal: #10b981;
+  --accent-gold: #f59e0b;
+  --accent-purple: #8b5cf6;
+  --accent-red: #ef4444;
+
+  --radius-panel: 12px;
+  --radius-btn: 0.5rem;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.875rem;
+  /* 14px */
+  --text-base: 1rem;
+  /* 16px */
+  --text-lg: 1.125rem;
+  /* 18px */
+  --text-xl: 1.25rem;
+  /* 20px */
+}
+
+/* --- Dark Mode Overrides for Modern --- */
+.dark {
+  --bg-body: #020617;
+  --bg-panel: #0f172a;
+  --bg-soft: #1e293b;
+  --border-subtle: rgba(148, 163, 184, 0.15);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+/* --- THEME: Institutional (Wall St) --- */
+[data-theme="institutional"] {
+  --bg-body: #f4f4f5;
+  --bg-panel: #ffffff;
+  --bg-soft: #e4e4e7;
+  --border-subtle: #d4d4d8;
+  --text-main: #18181b;
+  --text-muted: #52525b;
+
+  --font-sans: 'Merriweather', serif;
+  /* Serif Body for Report feel */
+  --font-head: 'Merriweather', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  /* Fixed missing import */
+
+  --accent-blue: #1e3a8a;
+  /* Navy */
+  --accent-teal: #047857;
+  /* Emerald */
+  --accent-gold: #b45309;
+  /* Bronze */
+  --accent-purple: #581c87;
+  --accent-red: #991b1b;
+
+  --radius-panel: 4px;
+  /* Sharper corners */
+  --radius-btn: 2px;
+}
+
+[data-theme="institutional"].dark {
+  --bg-body: #09090b;
+  --bg-panel: #18181b;
+  --bg-soft: #27272a;
+  --border-subtle: #3f3f46;
+  --text-main: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent-blue: #60a5fa;
+  --accent-gold: #fbbf24;
+}
+
+/* --- THEME: Terminal (Bloomberg) --- */
+[data-theme="terminal"] {
+  --bg-body: #000000;
+  --bg-panel: #000000;
+  --bg-soft: #1a1a1a;
+  --border-subtle: #333333;
+  --text-main: #ff9900;
+  /* Amber */
+  --text-muted: #00ff00;
+  /* Green */
+
+  --font-sans: 'JetBrains Mono', monospace;
+  /* All Monospace */
+  --font-head: 'JetBrains Mono', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --accent-blue: #00ffff;
+  /* Cyan */
+  --accent-teal: #00ff00;
+  /* Green */
+  --accent-gold: #ff9900;
+  /* Amber */
+  --accent-purple: #ff00ff;
+  /* Magenta */
+  --accent-red: #ff0000;
+  /* Red */
+
+  --radius-panel: 0px;
+  /* No radius */
+  --radius-btn: 0px;
+}
+
+/* Apply Variables */
+body {
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-head);
+}
+
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+.font-head {
+  font-family: var(--font-head) !important;
+}
+
+.font-sans {
+  font-family: var(--font-sans) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+  opacity: 0.2;
+}
+
+/* Glass Panel */
+.glass-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+  border-radius: var(--radius-panel);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="terminal"] .glass-panel {
+  background: #000000;
+  border: 1px solid #333;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* App Frame */
+.app-shell {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.frame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.dark .frame {
+  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.03), transparent 50%),
+    radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.03), transparent 50%),
+    var(--bg-panel);
+}
+
+[data-theme="terminal"] .frame {
+  background: #000000;
+  border: 1px solid #ff9900;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tab Active State */
+.nav-tab.active {
+  color: var(--text-main);
+  border-bottom: 2px solid var(--accent-blue);
+  background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.08));
+}
+
+[data-theme="terminal"] .nav-tab.active {
+  background: #333;
+  border-bottom: 2px solid #ff9900;
+  color: #ff9900;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat Animations */
+.chat-bubble-enter {
+  animation: slideInRight 0.2s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Modal */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  max-height: 85vh;
+}
+
+/* Animations for Detail Panel */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+.slide-in-from-top-4 {
+  animation-name: slideInFromTop;
+}
+
+/* Animations for Detail Panel */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+.slide-in-from-top-4 {
+  animation-name: slideInFromTop;
+}
