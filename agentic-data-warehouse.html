@@ -403,20 +403,17 @@
                     </aside>
 
                     <!-- DASHBOARD CONTENT -->
-                    <main class="flex-1 overflow-y-auto p-4">
+                    <main class="flex-1 overflow-y-auto p-4 bg-bgBody">
                         <div class="w-full space-y-2">
 
                             <!-- Hero Section -->
-                            <section class="flex flex-col gap-2 items-start text-left w-full">
-                                <div>
-                                    <h2 class="font-head text-2xl font-bold text-textMain mb-1">Data Pipeline Control
-                                        Center
-                                    </h2>
-                                    <p class="text-base text-textMuted leading-relaxed mb-2">
-                                        Monitor enterprise data flow from source to storage with real-time agent
-                                        orchestration.
-                                    </p>
-                                </div>
+                            <section
+                                class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 text-left w-full mb-2">
+                                <h2 class="font-head text-2xl font-bold text-textMain">Data Pipeline Control Center</h2>
+                                <p class="text-sm text-textMuted">
+                                    Monitor enterprise data flow from source to storage with real-time agent
+                                    orchestration.
+                                </p>
                             </section>
 
 
@@ -432,8 +429,6 @@
                                             <div>
                                                 <h3 class="font-head font-bold text-base text-textMain">Pipeline
                                                     Status</h3>
-                                                <p class="text-sm text-textMuted">Salesforce + SAP (Customer 360)
-                                                </p>
                                             </div>
                                             <span
                                                 class="text-xs font-mono text-textMuted bg-bgSoft px-2 py-1 rounded">ID:
@@ -628,38 +623,63 @@
                                                 </div>
                                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                     <div>
-                                                        <h5 class="text-xs font-bold text-textMain mb-2">Active Sources
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Live Ingestion
+                                                            Queue
                                                         </h5>
-                                                        <ul class="space-y-1">
-                                                            <li class="flex items-center gap-2 text-xs text-textMuted">
-                                                                <span
-                                                                    class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                                                Salesforce (Syncing)
-                                                            </li>
-                                                            <li class="flex items-center gap-2 text-xs text-textMuted">
-                                                                <span
-                                                                    class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                                                HubSpot (Syncing)
-                                                            </li>
-                                                            <li class="flex items-center gap-2 text-xs text-textMuted">
-                                                                <span
-                                                                    class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
-                                                                Google Drive (Scanning)
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div>
-                                                        <h5 class="text-xs font-bold text-textMain mb-2">Throughput</h5>
-                                                        <div class="flex items-end gap-1 h-12">
-                                                            <div class="w-1/5 bg-accentTeal/20 h-full rounded-t"></div>
-                                                            <div class="w-1/5 bg-accentTeal/40 h-3/4 rounded-t"></div>
-                                                            <div class="w-1/5 bg-accentTeal/60 h-1/2 rounded-t"></div>
-                                                            <div class="w-1/5 bg-accentTeal/80 h-4/5 rounded-t"></div>
+                                                        <div class="space-y-2">
                                                             <div
-                                                                class="w-1/5 bg-accentTeal h-full rounded-t animate-pulse">
+                                                                class="bg-bgSoft rounded p-2 border border-borderSubtle">
+                                                                <div class="flex justify-between text-[10px] mb-1">
+                                                                    <span
+                                                                        class="font-bold text-textMain">Q3_Financials_FY24.xlsx</span>
+                                                                    <span class="text-accentTeal">Parsing... 45%</span>
+                                                                </div>
+                                                                <div
+                                                                    class="w-full bg-bgBody h-1.5 rounded-full overflow-hidden">
+                                                                    <div
+                                                                        class="bg-accentTeal h-full w-[45%] animate-pulse">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="bg-bgSoft rounded p-2 border border-borderSubtle opacity-70">
+                                                                <div class="flex justify-between text-[10px] mb-1">
+                                                                    <span
+                                                                        class="font-bold text-textMain">Deal_Flow_Export_Nov.csv</span>
+                                                                    <span class="text-textMuted">Queued</span>
+                                                                </div>
+                                                                <div
+                                                                    class="w-full bg-bgBody h-1.5 rounded-full overflow-hidden">
+                                                                    <div class="bg-textMuted/20 h-full w-0"></div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="text-right text-[10px] text-textMuted mt-1">45 MB/s
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Event Stream
+                                                        </h5>
+                                                        <div
+                                                            class="h-24 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar">
+                                                            <div class="text-[10px] flex gap-2">
+                                                                <span class="text-textMuted font-mono">14:23:01</span>
+                                                                <span class="text-textMain">Salesforce: Fetching
+                                                                    'Opportunities' object</span>
+                                                            </div>
+                                                            <div class="text-[10px] flex gap-2">
+                                                                <span class="text-textMuted font-mono">14:23:00</span>
+                                                                <span class="text-textMain">GDrive: Detected new file in
+                                                                    /shared</span>
+                                                            </div>
+                                                            <div class="text-[10px] flex gap-2">
+                                                                <span class="text-textMuted font-mono">14:22:58</span>
+                                                                <span class="text-accentTeal">Completed sync: HubSpot
+                                                                    Contacts</span>
+                                                            </div>
+                                                            <div class="text-[10px] flex gap-2">
+                                                                <span class="text-textMuted font-mono">14:22:55</span>
+                                                                <span class="text-textMain">Initializing secure
+                                                                    handshake...</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -681,33 +701,59 @@
                                                                 stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                         </svg></button>
                                                 </div>
-                                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                                    <div
-                                                        class="p-2 bg-bgSoft/50 rounded border border-borderSubtle text-center">
-                                                        <div class="text-[10px] text-textMuted uppercase">Data Quality
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Active
+                                                            Transformation Logic</h5>
+                                                        <div class="space-y-2">
+                                                            <div
+                                                                class="p-2 bg-bgSoft rounded border border-borderSubtle">
+                                                                <div class="text-[10px] font-bold text-accentBlue mb-1">
+                                                                    Smart Cleaning Rule #104</div>
+                                                                <div class="text-[10px] text-textMain">Standardizing
+                                                                    Phone Numbers (+1 format)</div>
+                                                                <div class="text-[9px] text-textMuted mt-1">Applied to
+                                                                    12,400 records</div>
+                                                            </div>
+                                                            <div
+                                                                class="p-2 bg-bgSoft rounded border border-borderSubtle">
+                                                                <div class="text-[10px] font-bold text-accentBlue mb-1">
+                                                                    Entity Resolution</div>
+                                                                <div class="text-[10px] text-textMain">Deduplicating
+                                                                    'Acme Corp' vs 'Acme Inc'</div>
+                                                                <div class="text-[9px] text-textMuted mt-1">Confidence
+                                                                    Score: 99.2%</div>
+                                                            </div>
                                                         </div>
-                                                        <div class="text-xl font-bold text-accentBlue">98.5%</div>
                                                     </div>
-                                                    <div
-                                                        class="p-2 bg-bgSoft/50 rounded border border-borderSubtle text-center">
-                                                        <div class="text-[10px] text-textMuted uppercase">Rows Cleaned
+                                                    <div>
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Enrichment
+                                                            Actions</h5>
+                                                        <div class="space-y-2">
+                                                            <div class="flex items-center gap-2 text-[10px]">
+                                                                <span
+                                                                    class="w-1.5 h-1.5 rounded-full bg-accentBlue animate-pulse"></span>
+                                                                <span class="text-textMain">Fetching NAICS codes via
+                                                                    Clearbit API</span>
+                                                            </div>
+                                                            <div class="flex items-center gap-2 text-[10px]">
+                                                                <span
+                                                                    class="w-1.5 h-1.5 rounded-full bg-accentBlue animate-pulse"></span>
+                                                                <span class="text-textMain">Geocoding HQ addresses
+                                                                    (Google Maps)</span>
+                                                            </div>
+                                                            <div
+                                                                class="mt-3 p-2 bg-accentBlue/10 rounded border border-accentBlue/20">
+                                                                <div class="text-[10px] font-bold text-accentBlue">Data
+                                                                    Quality Score</div>
+                                                                <div class="flex items-end gap-2">
+                                                                    <span
+                                                                        class="text-2xl font-bold text-textMain">98.5%</span>
+                                                                    <span class="text-[10px] text-green-500 mb-1">↑
+                                                                        2.1%</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="text-xl font-bold text-textMain">1.2M</div>
-                                                    </div>
-                                                    <div
-                                                        class="p-2 bg-bgSoft/50 rounded border border-borderSubtle text-center">
-                                                        <div class="text-[10px] text-textMuted uppercase">Errors</div>
-                                                        <div class="text-xl font-bold text-red-400">0.02%</div>
-                                                    </div>
-                                                </div>
-                                                <div class="mt-3">
-                                                    <h5 class="text-xs font-bold text-textMain mb-2">Recent
-                                                        Transformations</h5>
-                                                    <div
-                                                        class="text-[10px] text-textMuted font-mono bg-bgBody/50 p-2 rounded border border-borderSubtle">
-                                                        <div>> Normalized phone numbers (E.164)</div>
-                                                        <div>> Enriched company data via Clearbit</div>
-                                                        <div>> Deduplicated 150 records</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -728,29 +774,74 @@
                                                                 stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                         </svg></button>
                                                 </div>
-                                                <div class="flex gap-4">
-                                                    <div class="flex-1">
-                                                        <h5 class="text-xs font-bold text-textMain mb-2">Storage Health
-                                                        </h5>
-                                                        <div
-                                                            class="w-full bg-bgSoft h-2 rounded-full overflow-hidden mb-1">
-                                                            <div class="bg-accentPurple h-full w-[65%]"></div>
-                                                        </div>
-                                                        <div class="flex justify-between text-[10px] text-textMuted">
-                                                            <span>Used: 650GB</span>
-                                                            <span>Total: 1TB</span>
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <h5 class="text-xs font-bold text-textMain mb-2">Schema
+                                                            Evolution</h5>
+                                                        <div class="space-y-2">
+                                                            <div
+                                                                class="p-2 bg-bgSoft rounded border border-borderSubtle">
+                                                                <div class="flex items-center gap-2 mb-1">
+                                                                    <span
+                                                                        class="text-[10px] font-bold text-accentPurple bg-accentPurple/10 px-1 rounded">ALTER
+                                                                        TABLE</span>
+                                                                    <span
+                                                                        class="text-[10px] font-mono text-textMain">dim_deals</span>
+                                                                </div>
+                                                                <div class="text-[10px] text-textMuted">Detected new
+                                                                    field 'ARR_Forecast' in source. Auto-migrating
+                                                                    schema.</div>
+                                                            </div>
+                                                            <div
+                                                                class="p-2 bg-bgSoft rounded border border-borderSubtle opacity-70">
+                                                                <div class="flex items-center gap-2 mb-1">
+                                                                    <span
+                                                                        class="text-[10px] font-bold text-green-500 bg-green-500/10 px-1 rounded">CREATE
+                                                                        INDEX</span>
+                                                                    <span
+                                                                        class="text-[10px] font-mono text-textMain">idx_customer_id</span>
+                                                                </div>
+                                                                <div class="text-[10px] text-textMuted">Optimizing query
+                                                                    performance for 'Customer 360' view.</div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="flex-1 border-l border-borderSubtle pl-4">
+                                                    <div>
                                                         <h5 class="text-xs font-bold text-textMain mb-2">Write
-                                                            Performance</h5>
-                                                        <div class="flex justify-between items-center mb-1">
-                                                            <span class="text-[10px] text-textMuted">Latency</span>
-                                                            <span class="text-xs font-bold text-green-400">12ms</span>
-                                                        </div>
-                                                        <div class="flex justify-between items-center">
-                                                            <span class="text-[10px] text-textMuted">IOPS</span>
-                                                            <span class="text-xs font-bold text-textMain">4,500</span>
+                                                            Operations</h5>
+                                                        <div class="space-y-1.5">
+                                                            <div
+                                                                class="flex justify-between items-center text-[10px] border-b border-borderSubtle pb-1">
+                                                                <span
+                                                                    class="font-mono text-textMain">fact_revenue</span>
+                                                                <span class="text-accentPurple font-bold">Committing
+                                                                    5,000 rows</span>
+                                                            </div>
+                                                            <div
+                                                                class="flex justify-between items-center text-[10px] border-b border-borderSubtle pb-1">
+                                                                <span
+                                                                    class="font-mono text-textMain">dim_customers</span>
+                                                                <span class="text-textMuted">Synced 120 updates</span>
+                                                            </div>
+                                                            <div class="flex justify-between items-center text-[10px]">
+                                                                <span
+                                                                    class="font-mono text-textMain">logs_ingestion</span>
+                                                                <span class="text-textMuted">Appending logs...</span>
+                                                            </div>
+                                                            <div class="mt-3 flex gap-4">
+                                                                <div>
+                                                                    <div class="text-[9px] text-textMuted uppercase">
+                                                                        Write Latency</div>
+                                                                    <div class="text-sm font-bold text-green-400">12ms
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="text-[9px] text-textMuted uppercase">
+                                                                        Total Records</div>
+                                                                    <div class="text-sm font-bold text-textMain">14.2M
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
