@@ -331,6 +331,8 @@ function renderComments(comments) {
 }
 
 function scrollToPost(id) {
+    // NOTE: This function should NOT switch to Graph View.
+    // It is intended to scroll to the post within the Feed View.
     const element = document.getElementById(`post-${id}`);
     if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -346,7 +348,54 @@ function renderRightSidebar(post) {
     const sidebar = document.getElementById('right-sidebar-content');
     if (!sidebar) return;
 
-    // Find related posts
+    // --- Feed Summary Logic ---
+    let summaryHtml = '';
+    if (currentView === 'graph') {
+        if (activeClusterId) {
+            const topic = activeClusterId.replace('cluster-', '');
+            const count = knowledgePosts.filter(p => {
+                const postTopic = p.tags[0] || 'Uncategorized';
+                const topTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]).slice(0, 5);
+                const effectiveTopic = topTags.includes(postTopic) ? postTopic : 'Other';
+                return effectiveTopic === topic;
+            }).length;
+            summaryHtml = `
+                <div class="glass-panel p-4 rounded-xl border border-borderSubtle mb-4 bg-bgSoft/50">
+                    <h3 class="font-bold text-xs text-textMain uppercase tracking-wider mb-2">Cluster Summary</h3>
+                    <ul class="list-disc pl-4 space-y-1 text-xs text-textMuted">
+                        <li><strong>Topic:</strong> ${topic}</li>
+                        <li><strong>Items:</strong> ${count} knowledge posts</li>
+                        <li><strong>Focus:</strong> Exploring connections within ${topic}.</li>
+                    </ul>
+                </div>
+            `;
+        } else {
+            summaryHtml = `
+                <div class="glass-panel p-4 rounded-xl border border-borderSubtle mb-4 bg-bgSoft/50">
+                    <h3 class="font-bold text-xs text-textMain uppercase tracking-wider mb-2">Graph Overview</h3>
+                    <ul class="list-disc pl-4 space-y-1 text-xs text-textMuted">
+                        <li><strong>Total:</strong> ${knowledgePosts.length} knowledge posts</li>
+                        <li><strong>Clusters:</strong> Top 5 topics + others</li>
+                        <li><strong>Interaction:</strong> Click a cluster to explore.</li>
+                    </ul>
+                </div>
+            `;
+        }
+    } else {
+        // Feed View Summary
+        summaryHtml = `
+            <div class="glass-panel p-4 rounded-xl border border-borderSubtle mb-4 bg-bgSoft/50">
+                <h3 class="font-bold text-xs text-textMain uppercase tracking-wider mb-2">Feed Summary</h3>
+                <ul class="list-disc pl-4 space-y-1 text-xs text-textMuted">
+                    <li><strong>Latest:</strong> ${knowledgePosts.length} new insights</li>
+                    <li><strong>Trending:</strong> #Valuation, #Risk</li>
+                    <li><strong>Action:</strong> Review pinned items first.</li>
+                </ul>
+            </div>
+        `;
+    }
+
+    // Find related posts (if a post is selected)
     const relatedPosts = post && post.relatedIds ? knowledgePosts.filter(p => post.relatedIds.includes(p.id)) : [];
 
     const relatedHtml = relatedPosts.map(p => `
@@ -362,8 +411,11 @@ function renderRightSidebar(post) {
 
     sidebar.innerHTML = `
         <div class="p-4 sticky top-0 h-full overflow-y-auto">
+            <!-- Feed Summary -->
+            ${summaryHtml}
+
             <!-- Selected Post Preview (Only in Graph Mode) -->
-            ${currentView === 'graph' ? `
+            ${currentView === 'graph' && post ? `
             <div class="glass-panel p-4 rounded-xl border border-borderSubtle mb-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-1.5 py-0.5 rounded bg-accentBlue/10 text-accentBlue text-[10px] font-bold uppercase">Selected</span>
@@ -377,6 +429,8 @@ function renderRightSidebar(post) {
             </div>
             ` : ''}
 
+            <!-- Related Posts (Only if a post is selected) -->
+            ${post ? `
             <div class="glass-panel p-4 rounded-xl border border-borderSubtle mb-4">
                 <h3 class="font-bold text-xs text-textMain uppercase tracking-wider mb-3">Related Knowledge Posts</h3>
                 <div class="space-y-3">
@@ -389,24 +443,7 @@ function renderRightSidebar(post) {
                 </button>
                 ` : ''}
             </div>
-
-            <div class="glass-panel p-4 rounded-xl border border-borderSubtle">
-                <h3 class="font-bold text-xs text-textMain uppercase tracking-wider mb-2">How this feed works</h3>
-                <div class="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300 text-[10px] font-bold mb-3 border border-purple-200 dark:border-purple-500/30">
-                    <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
-                    Knowledge Agent Runtime
-                </div>
-                <ul class="space-y-2 text-xs text-textMuted">
-                    <li class="flex gap-2">
-                        <span class="text-accentBlue">•</span>
-                        <span>Top upvoted posts become <strong>default context</strong> for all agents.</span>
-                    </li>
-                    <li class="flex gap-2">
-                        <span class="text-accentBlue">•</span>
-                        <span>Agents read pinned posts <strong>before</strong> answering any query.</span>
-                    </li>
-                </ul>
-            </div>
+            ` : ''}
         </div>
     `;
 }
@@ -440,6 +477,8 @@ function switchView(view) {
             cancelAnimationFrame(graphSimulation);
             graphSimulation = null;
         }
+        // Update sidebar for feed view
+        renderRightSidebar(null);
     } else {
         feedContainer.classList.add('hidden');
         graphView.classList.remove('hidden');
@@ -455,25 +494,43 @@ function switchView(view) {
         setTimeout(() => {
             requestAnimationFrame(renderGraph);
         }, 50);
+        // Update sidebar for graph view (initial state)
+        renderRightSidebar(null);
     }
 }
 
 // --- Graph Logic (Canvas) ---
 let graphSimulation = null;
 
+// --- Graph Logic (Clustered) ---
+// graphSimulation is already declared above
+// let graphSimulation = null; 
+let activeClusterId = null; // State for expanded cluster
+let tagCounts = {}; // Global to store tag frequencies
+
+// Color Palette for Clusters
+const clusterColors = [
+    '#3b82f6', // Blue
+    '#10b981', // Emerald
+    '#8b5cf6', // Purple
+    '#f59e0b', // Amber
+    '#ef4444', // Red
+    '#ec4899', // Pink
+    '#06b6d4', // Cyan
+    '#84cc16', // Lime
+];
+
 function renderGraph() {
     const canvas = document.getElementById('knowledgeGraphCanvas');
     if (!canvas) return;
 
-    // Resize canvas with High DPI support
+    // Resize canvas
     const parent = canvas.parentElement;
     const dpr = window.devicePixelRatio || 1;
     const rect = parent.getBoundingClientRect();
 
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
-
-    // Scale down with CSS
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
 
@@ -483,57 +540,124 @@ function renderGraph() {
     const width = rect.width;
     const height = rect.height;
 
-    // Starfield Background (Static)
-    const stars = Array.from({ length: 100 }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 1.5,
-        opacity: Math.random() * 0.5 + 0.1
-    }));
-
-    // Nodes & Links
-    const nodes = knowledgePosts.map(p => {
-        // Dynamic Sizing based on Score (Base 15 + Score/20)
-        const radius = 15 + (p.score / 25);
-
-        // Color Coding by Author Role
-        let color = '#64748b'; // Default Slate
-        if (p.authorRole === 'System') color = '#3b82f6'; // Blue
-        else if (p.authorRole === 'Human') color = '#10b981'; // Emerald
-        else if (p.authorRole === 'Agent') color = '#8b5cf6'; // Purple
-        else if (p.authorRole === 'Super Agent') color = '#f59e0b'; // Amber
-
-        return {
-            id: p.id,
-            label: p.title.length > 15 ? p.title.substring(0, 15) + '...' : p.title,
-            fullTitle: p.title,
-            x: Math.random() * width,
-            y: Math.random() * height,
-            vx: 0,
-            vy: 0,
-            radius: radius,
-            color: color,
-            score: p.score
-        };
+    // --- 1. Data Processing (Clustering) ---
+    // Count tag frequencies
+    tagCounts = {}; // Reset for fresh calculation
+    knowledgePosts.forEach(p => {
+        const tag = p.tags[0] || 'Uncategorized';
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
     });
 
-    const links = [];
-    knowledgePosts.forEach(p => {
-        if (p.relatedIds) {
-            p.relatedIds.forEach(targetId => {
-                if (targetId > p.id && knowledgePosts.find(k => k.id === targetId)) {
-                    links.push({ source: p.id, target: targetId });
+    // Sort tags by frequency and pick top 5
+    const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
+    const topTags = sortedTags.slice(0, 5);
+    const otherTag = 'Other';
+
+    // Helper to get cluster for a post
+    const getClusterTopic = (post) => {
+        const tag = post.tags[0] || 'Uncategorized';
+        return topTags.includes(tag) ? tag : otherTag;
+    };
+
+    // Create Cluster Nodes (Top 5 + Other)
+    const clusterTopics = [...topTags];
+    if (sortedTags.length > 5) clusterTopics.push(otherTag);
+
+    const clusterNodes = clusterTopics.map((topic, index) => ({
+        id: `cluster-${topic}`,
+        label: topic,
+        type: 'cluster',
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: 0,
+        vy: 0,
+        radius: 40,
+        color: clusterColors[index % clusterColors.length],
+        count: knowledgePosts.filter(p => getClusterTopic(p) === topic).length
+    }));
+
+    // Create Post Nodes
+    let postNodes = [];
+    if (activeClusterId) {
+        const activeTopic = clusterNodes.find(c => c.id === activeClusterId)?.label;
+        if (activeTopic) {
+            // 1. Nodes in the active cluster
+            const clusterPosts = knowledgePosts.filter(p => getClusterTopic(p) === activeTopic);
+
+            // 2. Nodes related to the active cluster nodes (Cross-Cluster)
+            const relatedIds = new Set();
+            clusterPosts.forEach(p => {
+                if (p.relatedIds) p.relatedIds.forEach(id => relatedIds.add(id));
+            });
+
+            // Filter related posts that are NOT in the active cluster
+            const relatedPosts = knowledgePosts.filter(p => relatedIds.has(p.id) && getClusterTopic(p) !== activeTopic);
+
+            // Combine
+            postNodes = [...clusterPosts, ...relatedPosts].map(p => {
+                // Determine color based on ITS OWN cluster
+                const topic = getClusterTopic(p);
+                const clusterIndex = clusterTopics.indexOf(topic);
+                const color = clusterColors[clusterIndex % clusterColors.length];
+
+                return {
+                    id: p.id,
+                    label: p.title,
+                    type: 'post',
+                    x: width / 2 + (Math.random() - 0.5) * 50,
+                    y: height / 2 + (Math.random() - 0.5) * 50,
+                    vx: 0,
+                    vy: 0,
+                    radius: 15 + (p.score / 25),
+                    color: color, // Inherit cluster color
+                    data: p,
+                    clusterId: `cluster-${topic}`
+                };
+            });
+        }
+    }
+
+    const nodes = [...clusterNodes, ...postNodes];
+
+    // Links
+    let links = [];
+
+    postNodes.forEach(post => {
+        // 1. Connect to its own cluster (Parent-Child)
+        links.push({
+            source: post.clusterId,
+            target: post.id,
+            type: 'parent'
+        });
+
+        // 2. Connect related posts (Sibling-Sibling or Cross-Cluster)
+        if (post.data.relatedIds) {
+            post.data.relatedIds.forEach(relatedId => {
+                const targetNode = postNodes.find(n => n.id === relatedId);
+                if (targetNode && post.id < relatedId) {
+                    links.push({
+                        source: post.id,
+                        target: relatedId,
+                        type: 'related'
+                    });
                 }
             });
         }
     });
 
-    // Physics Constants (Ontology Style: More spread out)
-    const REPULSION = 8000; // Increased for more spacing
-    const SPRING_LENGTH = 300; // Increased spring length
-    const SPRING_STRENGTH = 0.04;
-    const CENTER_PULL = 0.002; // Weaker center pull
-    const DAMPING = 0.85;
+    // --- 2. Simulation Constants ---
+    const REPULSION = 4500; // Increased to keep clusters apart
+    const SPRING_LENGTH = 100; // Shorter for tighter clusters
+    const SPRING_STRENGTH = 0.15; // Stronger for tighter clusters
+    const CENTER_PULL = 0.0005;
+    const DAMPING = 0.6;
+    const COLLISION_PADDING = 60;
+
+    // UI Bounds (Strict Avoidance Zones)
+    // Aggressively Expanded
+    const LEGEND_RECT = { x: width - 260, y: 0, w: 260, h: 350 }; // Top Right (Taller)
+    const TITLE_RECT = { x: 0, y: 0, w: 500, h: 140 }; // Top Left (Much Wider for Subtitle)
+    const BACK_BTN_RECT = { x: 0, y: height - 80, w: 200, h: 80 }; // Bottom Left
 
     // Helper for text wrapping
     function wrapText(ctx, text, maxWidth) {
@@ -555,40 +679,41 @@ function renderGraph() {
         return lines;
     }
 
-    // Interaction State
+    // --- 3. Interaction State ---
     let hoverNode = null;
+    // let frameCount = 0; // Removed for continuous floating
 
-    // Animation Loop
+    // --- 4. Render Legend ---
+    renderLegend(clusterNodes);
+
+    // --- 5. Animation Loop ---
     function step() {
         if (!graphSimulation && currentView !== 'graph') return;
 
-        // 0. Clear & Background
-        ctx.clearRect(0, 0, width, height);
+        // Continuous floating (No freeze)
 
-        // Starfield (Dimmed)
-        if (isDarkMode) {
-            ctx.fillStyle = '#020617'; // Deep background
-            ctx.fillRect(0, 0, width, height); // Fill background first
-            ctx.fillStyle = '#ffffff';
-            ctx.globalAlpha = 0.3;
-            stars.forEach(star => {
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            ctx.globalAlpha = 1.0;
-        } else {
-            ctx.fillStyle = '#f8fafc'; // Light background
-            ctx.fillRect(0, 0, width, height);
-        }
+        // Update Physics
+        updatePhysics();
 
-        // 1. Physics Step
+        // Draw
+        draw();
+
+        graphSimulation = requestAnimationFrame(step);
+    }
+
+    function updatePhysics() {
+        // 1. Repulsion
         for (let i = 0; i < nodes.length; i++) {
             for (let j = i + 1; j < nodes.length; j++) {
                 const dx = nodes[j].x - nodes[i].x;
                 const dy = nodes[j].y - nodes[i].y;
                 const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                const force = REPULSION / (dist * dist);
+
+                let force = REPULSION / (dist * dist);
+                if (nodes[i].type === 'cluster' && nodes[j].type === 'cluster') {
+                    force *= 3;
+                }
+
                 const fx = (dx / dist) * force;
                 const fy = (dy / dist) * force;
 
@@ -599,6 +724,7 @@ function renderGraph() {
             }
         }
 
+        // 2. Links (Springs)
         links.forEach(link => {
             const source = nodes.find(n => n.id === link.source);
             const target = nodes.find(n => n.id === link.target);
@@ -606,7 +732,21 @@ function renderGraph() {
                 const dx = target.x - source.x;
                 const dy = target.y - source.y;
                 const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                const force = (dist - SPRING_LENGTH) * SPRING_STRENGTH;
+
+                // Tuned Spring Logic
+                let length, strength;
+
+                if (link.type === 'parent') {
+                    // Strong, short springs for Cluster -> Post
+                    length = SPRING_LENGTH;
+                    strength = SPRING_STRENGTH;
+                } else {
+                    // Weak, long springs for Related Posts (minimize tangling)
+                    length = 200;
+                    strength = 0.01;
+                }
+
+                const force = (dist - length) * strength;
                 const fx = (dx / dist) * force;
                 const fy = (dy / dist) * force;
 
@@ -617,155 +757,198 @@ function renderGraph() {
             }
         });
 
+        // 3. Center Pull & Bounds
         nodes.forEach(node => {
-            const dx = width / 2 - node.x;
-            const dy = height / 2 - node.y;
-            node.vx += dx * CENTER_PULL;
-            node.vy += dy * CENTER_PULL;
+            // Center Pull
+            let targetX = width / 2;
+            let targetY = height / 2;
 
+            if (node.id === activeClusterId) {
+                targetY = height / 3;
+                node.vx += (targetX - node.x) * 0.05;
+                node.vy += (targetY - node.y) * 0.05;
+            } else {
+                node.vx += (targetX - node.x) * CENTER_PULL;
+                node.vy += (targetY - node.y) * CENTER_PULL;
+            }
+
+            // Apply Velocity & Damping
             node.vx *= DAMPING;
             node.vy *= DAMPING;
-
             node.x += node.vx;
             node.y += node.vy;
 
-            // Bounds
-            node.x = Math.max(node.radius + 40, Math.min(width - node.radius - 40, node.x));
-            node.y = Math.max(node.radius + 40, Math.min(height - node.radius - 40, node.y));
+            // STRICT BOUNDS (Hard Clamping)
+            const r = node.radius + 5;
+
+            // Canvas Bounds
+            node.x = Math.max(r, Math.min(width - r, node.x));
+            node.y = Math.max(r, Math.min(height - r, node.y));
+
+            // --- UI AVOIDANCE (Hard Walls) ---
+
+            // 1. Legend (Top Right)
+            if (node.x > LEGEND_RECT.x - r && node.y < LEGEND_RECT.y + LEGEND_RECT.h + r) {
+                // Push to Left or Bottom
+                const distToLeft = Math.abs(node.x - (LEGEND_RECT.x - r));
+                const distToBottom = Math.abs(node.y - (LEGEND_RECT.y + LEGEND_RECT.h + r));
+
+                if (distToLeft < distToBottom) {
+                    node.x = LEGEND_RECT.x - r;
+                    if (node.vx > 0) node.vx = 0;
+                } else {
+                    node.y = LEGEND_RECT.y + LEGEND_RECT.h + r;
+                    if (node.vy < 0) node.vy = 0;
+                }
+            }
+
+            // 2. Title (Top Left)
+            if (node.x < TITLE_RECT.x + TITLE_RECT.w + r && node.y < TITLE_RECT.y + TITLE_RECT.h + r) {
+                // Push to Right or Bottom
+                const distToRight = Math.abs(node.x - (TITLE_RECT.x + TITLE_RECT.w + r));
+                const distToBottom = Math.abs(node.y - (TITLE_RECT.y + TITLE_RECT.h + r));
+
+                if (distToRight < distToBottom) {
+                    node.x = TITLE_RECT.x + TITLE_RECT.w + r;
+                    if (node.vx < 0) node.vx = 0;
+                } else {
+                    node.y = TITLE_RECT.y + TITLE_RECT.h + r;
+                    if (node.vy < 0) node.vy = 0;
+                }
+            }
+
+            // 3. Back Button (Bottom Left)
+            if (node.x < BACK_BTN_RECT.x + BACK_BTN_RECT.w + r && node.y > BACK_BTN_RECT.y - r) {
+                // Push to Right or Top
+                const distToRight = Math.abs(node.x - (BACK_BTN_RECT.x + BACK_BTN_RECT.w + r));
+                const distToTop = Math.abs(node.y - (BACK_BTN_RECT.y - r));
+
+                if (distToRight < distToTop) {
+                    node.x = BACK_BTN_RECT.x + BACK_BTN_RECT.w + r;
+                    if (node.vx < 0) node.vx = 0;
+                } else {
+                    node.y = BACK_BTN_RECT.y - r;
+                    if (node.vy > 0) node.vy = 0;
+                }
+            }
         });
 
-        // 2. Draw Links (Directional Arrows)
+        // 4. Collision Resolution
+        for (let k = 0; k < 3; k++) {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[j].x - nodes[i].x;
+                    const dy = nodes[j].y - nodes[i].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                    const minDist = nodes[i].radius + nodes[j].radius + COLLISION_PADDING;
+
+                    if (dist < minDist) {
+                        const overlap = minDist - dist;
+                        const moveX = (dx / dist) * overlap * 0.5;
+                        const moveY = (dy / dist) * overlap * 0.5;
+
+                        nodes[j].x += moveX;
+                        nodes[j].y += moveY;
+                        nodes[i].x -= moveX;
+                        nodes[i].y -= moveY;
+
+                        nodes[j].vx *= 0.5;
+                        nodes[j].vy *= 0.5;
+                        nodes[i].vx *= 0.5;
+                        nodes[i].vy *= 0.5;
+                    }
+                }
+            }
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Background
+        if (isDarkMode) {
+            ctx.fillStyle = '#020617';
+            ctx.fillRect(0, 0, width, height);
+        } else {
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        // Links
         links.forEach(link => {
             const source = nodes.find(n => n.id === link.source);
             const target = nodes.find(n => n.id === link.target);
             if (source && target) {
-                // Focus Mode: Dim if hovering and not connected
-                let alpha = 0.3;
-                let lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(source.x, source.y);
+                ctx.lineTo(target.x, target.y);
 
-                if (hoverNode) {
-                    const isConnected = (link.source === hoverNode.id || link.target === hoverNode.id);
-                    alpha = isConnected ? 0.8 : 0.05;
-                    lineWidth = isConnected ? 2.5 : 1;
+                if (link.type === 'parent') {
+                    ctx.strokeStyle = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+                    ctx.lineWidth = 1;
+                } else {
+                    ctx.strokeStyle = isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([5, 5]);
                 }
 
-                ctx.strokeStyle = isDarkMode ? `rgba(255, 255, 255, ${alpha})` : `rgba(0, 0, 0, ${alpha})`;
-                ctx.fillStyle = isDarkMode ? `rgba(255, 255, 255, ${alpha})` : `rgba(0, 0, 0, ${alpha})`;
-                ctx.lineWidth = lineWidth;
-
-                // Calculate Geometry
-                const angle = Math.atan2(target.y - source.y, target.x - source.x);
-                const targetRadius = target.radius + 5; // Gap for arrow
-
-                const startX = source.x + Math.cos(angle) * source.radius;
-                const startY = source.y + Math.sin(angle) * source.radius;
-                const endX = target.x - Math.cos(angle) * targetRadius;
-                const endY = target.y - Math.sin(angle) * targetRadius;
-
-                // Draw Line
-                ctx.beginPath();
-                ctx.moveTo(startX, startY);
-                ctx.lineTo(endX, endY);
                 ctx.stroke();
-
-                // Draw Arrow Head
-                const arrowLen = 8;
-                ctx.beginPath();
-                ctx.moveTo(endX, endY);
-                ctx.lineTo(endX - arrowLen * Math.cos(angle - Math.PI / 6), endY - arrowLen * Math.sin(angle - Math.PI / 6));
-                ctx.lineTo(endX - arrowLen * Math.cos(angle + Math.PI / 6), endY - arrowLen * Math.sin(angle + Math.PI / 6));
-                ctx.fill();
+                ctx.setLineDash([]);
             }
         });
 
-        // 3. Draw Nodes (Clean Ontology Style)
+        // Nodes
         nodes.forEach(node => {
-            // Focus Mode: Dim if hovering and not this node
-            let alpha = 1.0;
-            if (hoverNode && hoverNode.id !== node.id) {
-                // Check if connected
-                const isConnected = links.some(l => (l.source === hoverNode.id && l.target === node.id) || (l.target === hoverNode.id && l.source === node.id));
-                if (!isConnected) alpha = 0.2;
-            }
-
-            ctx.globalAlpha = alpha;
-
-            // Node Body (Solid with Border)
             ctx.beginPath();
             ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
             ctx.fillStyle = node.color;
-            ctx.fill();
 
-            // Border
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.9)';
-            ctx.stroke();
-
-            // Hover Highlight Ring
-            if (node === hoverNode) {
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, node.radius + 4, 0, Math.PI * 2);
-                ctx.strokeStyle = node.color;
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            }
-
-            // Label (Background for readability)
-            if (alpha > 0.3) {
-                ctx.font = `bold 12px Inter, sans-serif`; // Increased font size
-                const maxWidth = 120; // Max width for wrapping
-                const lines = wrapText(ctx, node.fullTitle, maxWidth);
-                const lineHeight = 14;
-                const totalHeight = lines.length * lineHeight;
-                const padding = 6;
-
-                // Calculate max width of lines
-                let maxLineWidth = 0;
-                lines.forEach(line => {
-                    const w = ctx.measureText(line).width;
-                    if (w > maxLineWidth) maxLineWidth = w;
-                });
-
-                // Label Background
-                ctx.fillStyle = isDarkMode ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)';
-                ctx.beginPath();
-                // Fallback for roundRect if not supported, or just use rect
-                if (ctx.roundRect) {
-                    ctx.roundRect(node.x - maxLineWidth / 2 - padding, node.y + node.radius + 4, maxLineWidth + padding * 2, totalHeight + padding * 2, 4);
-                } else {
-                    ctx.rect(node.x - maxLineWidth / 2 - padding, node.y + node.radius + 4, maxLineWidth + padding * 2, totalHeight + padding * 2);
-                }
-                ctx.fill();
-
-                // Label Text
-                ctx.fillStyle = isDarkMode ? '#e2e8f0' : '#1e293b';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'top'; // Easier for multi-line
-
-                lines.forEach((line, index) => {
-                    ctx.fillText(line, node.x, node.y + node.radius + 4 + padding + (index * lineHeight));
-                });
-
+            if (node.type === 'cluster') {
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = node.color;
+            } else {
                 ctx.shadowBlur = 0;
             }
 
-            ctx.globalAlpha = 1.0;
-        });
+            ctx.fill();
+            ctx.shadowBlur = 0;
 
-        graphSimulation = requestAnimationFrame(step);
+            // Border
+            ctx.strokeStyle = isDarkMode ? '#fff' : '#fff';
+            ctx.lineWidth = node.id === activeClusterId ? 4 : 2;
+            ctx.stroke();
+
+            // Label
+            ctx.fillStyle = isDarkMode ? '#fff' : '#1e293b';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            if (node.type === 'cluster') {
+                ctx.font = 'bold 14px Inter';
+                ctx.fillText(node.label, node.x, node.y);
+                ctx.font = '10px Inter';
+                ctx.fillText(`${node.count} items`, node.x, node.y + 14);
+            } else {
+                ctx.font = '11px Inter';
+                const maxWidth = 100;
+                const lines = wrapText(ctx, node.label, maxWidth);
+                const lineHeight = 13;
+
+                ctx.fillStyle = isDarkMode ? '#e2e8f0' : '#334155';
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, node.x, node.y + node.radius + 12 + (i * lineHeight));
+                });
+            }
+        });
     }
 
     step();
 
-    // Interaction (Hover & Click)
+    // --- Interaction ---
     canvas.onmousemove = (e) => {
         const rect = canvas.getBoundingClientRect();
-        // Adjust mouse coordinates for CSS scaling
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-
-        const mouseX = (e.clientX - rect.left);
-        const mouseY = (e.clientY - rect.top);
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
 
         hoverNode = nodes.find(node => {
             const dx = node.x - mouseX;
@@ -778,11 +961,66 @@ function renderGraph() {
 
     canvas.onclick = (e) => {
         if (hoverNode) {
-            // Render the clicked post in the Right Sidebar
-            const post = knowledgePosts.find(p => p.id === hoverNode.id);
-            if (post) {
-                renderRightSidebar(post);
+            if (hoverNode.type === 'cluster') {
+                // Toggle Cluster
+                if (activeClusterId === hoverNode.id) {
+                    activeClusterId = null; // Collapse
+                } else {
+                    activeClusterId = hoverNode.id; // Expand
+                }
+                // Restart simulation to handle new nodes
+                cancelAnimationFrame(graphSimulation);
+                renderGraph();
+            } else if (hoverNode.type === 'post') {
+                // Show Details
+                renderRightSidebar(hoverNode.data);
             }
+        } else {
+            // Click background to deselect/collapse?
+            // activeClusterId = null;
+            // cancelAnimationFrame(graphSimulation);
+            // renderGraph();
         }
     };
+}
+
+function renderLegend(clusters) {
+    const container = document.getElementById('view-graph');
+    let legend = document.getElementById('graph-legend');
+
+    // Create if not exists
+    if (!legend) {
+        legend = document.createElement('div');
+        legend.id = 'graph-legend';
+        legend.className = 'absolute top-4 right-4 bg-bgPanel/90 backdrop-blur p-3 rounded-lg border border-borderSubtle shadow-sm z-20 max-w-[200px]';
+        container.appendChild(legend);
+    }
+
+    legend.innerHTML = `
+        <h4 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-2">Topics</h4>
+        <div class="space-y-1.5">
+            ${clusters.map(c => `
+                <div class="flex items-center gap-2 cursor-pointer hover:bg-bgSoft rounded p-1 transition-colors" onclick="triggerClusterClick('${c.id}')">
+                    <span class="w-3 h-3 rounded-full" style="background-color: ${c.color}"></span>
+                    <span class="text-xs text-textMain font-medium truncate">${c.label}</span>
+                    <span class="text-[10px] text-textMuted ml-auto">${c.count}</span>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// Helper to trigger click from legend
+window.triggerClusterClick = function (clusterId) {
+    activeClusterId = (activeClusterId === clusterId) ? null : clusterId;
+    // Re-render
+    const canvas = document.getElementById('knowledgeGraphCanvas');
+    if (canvas) {
+        // We need to restart the render loop
+        // Best way is to just call renderGraph again, which cancels old loop if we manage it right
+        // But renderGraph doesn't cancel the *current* loop if called recursively.
+        // We should cancel existing before calling.
+        if (graphSimulation) cancelAnimationFrame(graphSimulation);
+        renderGraph();
+    }
 }
